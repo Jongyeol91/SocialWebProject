@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+</head>
+<body>
+    <h1>perfact study</h1>
+    
+    <form action="/study">
+        <button a href ="/study">스터디 만들기</button>
+    </form>
+
+    <form action ="/user">
+        <button>회원가입 하기</button>
+    </form>
+
+    <% studys.forEach(function(study){ %>
+        <li><%= study.studyName %></li>
+        <a href ="/study/<%= study._id %>">read more</a>
+        <form action = "/study/<%=study._id%>/enter" method="post">
+            <button type = "submit">가입하기</button>
+        </form>
+    <% }) %> 
+</body>
+</html>
