@@ -15,11 +15,11 @@
             <div class=thumbnail>
                 <img calss="img-responsive" src="<%= foundStudy.img %>" >
                 <div class="caption-full">
-                    <h4 class="pull-right">9.00/night</h4>
-                    <h4><%= foundStudy.studyName %></h4>
-                    <p><%=foundStudy.discription%></p>
-                    <%= moment(foundStudy.makedDate).format("YYYY년 MM월 DD일") %>
-                    <h4><%= foundStudy.location %><h4>
+                    <p class="pull-right">스터디 개설일: <%= moment(foundStudy.makedDate).format("YYYY년 MM월 DD일") %></p>
+                    <h4><a>스터디 이름: <%= foundStudy.studyName %></a></h4>
+                    <p>스터디 만든이: <em><%=foundStudy.author.username%></em></p>
+                    <p>스터디 설명: <%=foundStudy.discription%></p>
+                    <p>스터디 위치: <%= foundStudy.location %><p>
                     <!--스터디가입-->
                     <form action ="/study/<%= foundStudy._id %>/user/new" method="POST">
                         <button>가입하기</button>

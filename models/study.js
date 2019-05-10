@@ -6,6 +6,13 @@ const studySchema = new mongoose.Schema({
     location: String,
     img: String,
     makedDate: { type: Date, default: Date.now },
+    author:{
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username:String
+    },
     joinUsers: [{ type:mongoose.Schema.Types.ObjectId, ref: "User" }], 
     comments: [{type:mongoose.Schema.Types.ObjectId, ref:"Comment"}]
 });
