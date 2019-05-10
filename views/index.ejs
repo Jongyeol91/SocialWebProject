@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-</head>
-<body>
-    <h1>perfact study</h1>
+<%-include("partials/header")-%>
+        <h4><%=currentUser%></h4>
+        <h1> 퍼팩트 스터디</h1>
+        <p> 개설된 스터디를 둘러보세요</p>
+        <p>
+            <a class="btn btn-primary btn-large" href="/register"> 회원가입 하기</a>
+            <a class="btn btn-primary btn-large"  href ="/study">스터디 만들기</a>
+        </p>
     
-    <form action="/study">
-        <button a href ="/study">스터디 만들기</button>
-    </form>
+<div id=columns>   
+        <% studys.forEach(function(study){ %>
+            <figure>     
+                <%= study.studyName %>
+                <img src ="<%=study.img%> ">
+               <figcaption> <a href ="/study/<%= study._id %>">read more</a></figcaption>
+            </figure>
+        <% }) %> 
+</div>
 
-    <form action ="/user">
-        <button>회원가입 하기</button>
-    </form>
-
-    <% studys.forEach(function(study){ %>
-        <li><%= study.studyName %></li>
-        <a href ="/study/<%= study._id %>">read more</a>
-        <form action = "/study/<%=study._id%>/enter" method="post">
-            <button type = "submit">가입하기</button>
-        </form>
-    <% }) %> 
-</body>
-</html>
+<%-include("partials/footer")-%>

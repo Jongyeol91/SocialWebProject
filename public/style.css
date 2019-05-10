@@ -1,0 +1,60 @@
+body{
+    padding-top:40px; 
+    background: url(//subtlepatterns.com/patterns/scribble_light.png);
+    margin: 50px;
+}
+/* 
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+  } */
+
+
+img {
+    width: 400px; /* You can set the dimensions to whatever you want */
+    height: auto;
+    object-fit: contain;
+}
+
+#columns{
+    column-width: 200px;
+    
+}
+
+#columns figure{
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: 15px;
+    padding:10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    background: #fefefe;
+    transition: opacity .4s ease-in-out;
+    transition: transform .2s ease-in-out;
+}
+
+#columns figure img{
+    width: 100%;
+}
+
+#columns figure figcaption{
+    border-top:1px solid rgba(0,0,0,0.2);;
+    padding:5px;
+    margin-top:11px;
+}
+/*컬럼에 마우스 올라갔을때 전체 오페시티 / 피규어에서 마우스 올라간건 효과 안줌*/
+#columns figure:hover {
+    opacity: 0.98;
+    transform: translateY(-7px);
+}
+
+.thumbnail img{
+    width: 100%
+}
+
+.thumbnail{
+    padding: 0;
+}
+
+.thumbnail .caption-full{
+    padding: 9px;
+}

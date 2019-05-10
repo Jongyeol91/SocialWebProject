@@ -1,0 +1,57 @@
+<%-include("partials/header")-%>
+     
+    <div class="row">
+
+        <div class ="col-md-3">
+            <p class="lead">퍼팩트 스터디</p>
+            <div class = "list-group">
+                <li class="list-group-item active"></li>
+                <li class="list-group-item"></li>
+                <li class="list-group-item"></li>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class=thumbnail>
+                <img calss="img-responsive" src="<%= foundStudy.img %>" >
+                <div class="caption-full">
+                    <h4 class="pull-right">9.00/night</h4>
+                    <h4><%= foundStudy.studyName %></h4>
+                    <p><%=foundStudy.discription%></p>
+                    <%= moment(foundStudy.makedDate).format("YYYY년 MM월 DD일") %>
+                    <h4><%= foundStudy.location %><h4>
+                    <!--스터디가입-->
+                    <form action ="/study/<%= foundStudy._id %>/user/new" method="POST">
+                        <button>가입하기</button>
+                    </form>
+                </div>
+            </div>
+            <div class="well">
+                <div class="text-right">
+                    <!--댓글생성-->
+                    <form action="/study/<%= foundStudy._id %>/comment/new" method="POST">
+                        <input type="text" name="content">
+                        <button>입력</button>
+                        <hr>
+                    </form>
+                </div>
+        
+                <div class="row">
+                    <div class="col-md-12">
+                        <% foundStudy.comments.forEach(function(comment){ %>
+                            <strong><%= comment.author.username%></strong>
+                            <span class="pull-right"><%= moment(comment.createdDate).format("YYYY년 MM월 DD일") %></span>
+                        <p>
+                            <%= comment.content %>
+                        </p>
+                        <hr>
+                        <% }) %>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div>
+               
+    
+    
+<%-include("partials/footer")-%>
