@@ -2,12 +2,13 @@ body{
     padding-top:40px; 
     background: url(//subtlepatterns.com/patterns/scribble_light.png);
     margin: 50px;
+    font-family: 'Open Sans', sans-serif;
 }
-/* 
+
 .flex {
     display: flex;
     flex-wrap: wrap;
-  } */
+  }
 
 
 img {
@@ -16,9 +17,12 @@ img {
     object-fit: contain;
 }
 
+#delete-form{
+    display: inline;
+}
+
 #columns{
     column-width: 200px;
-    
 }
 
 #columns figure{
@@ -41,6 +45,7 @@ img {
     padding:5px;
     margin-top:11px;
 }
+
 /*컬럼에 마우스 올라갔을때 전체 오페시티 / 피규어에서 마우스 올라간건 효과 안줌*/
 #columns figure:hover {
     opacity: 0.98;
@@ -57,4 +62,108 @@ img {
 
 .thumbnail .caption-full{
     padding: 9px;
+}
+
+/* login page */
+
+.loginbox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 40px;
+    background: rgba(191, 215, 223, 0.8);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.5);
+    border-radius: 10px;
+}
+
+.loginbox h1{
+    margin: 0 0 30px;
+    padding: 0;
+    color: rgba(2, 1, 10, 0.637);
+    text-align: center;
+}
+
+.textbox{
+    position: relative;
+}
+
+.textbox i {
+    width: 30px;
+    text-align: center;
+}
+
+.loginbox .textbox input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: black;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+    letter-spacing: 1px;
+    
+}
+
+
+.loginbox .textbox label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: darkgray;
+    pointer-events: none;
+    transition: .5s; 
+    letter-spacing: 1px;
+}
+
+.loginbox .textbox input:focus ~ label, 
+.loginbox .textbox input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: black;
+    font-size: 12px;
+}
+
+.loginbox #btn{
+    width: 100%;
+    background: none;
+    color: darkslategray;
+    border: 1px solid  darkslategray;
+    padding: 10px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+
+/*스터디 수정*/
+.editbox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-75%, -50%);
+    width: 400px;
+    padding: 40px;
+    background: rgba(191, 215, 223, 0.8);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.5);
+    border-radius: 10px;
+}
+
+.discriptionbox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-10%, -50%);
+    width: 400px;
+    padding: 40px;
+    background: rgba(191, 215, 223, 0.8);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.5);
+    border-radius: 10px;
 }

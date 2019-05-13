@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./comment');
 
 const studySchema = new mongoose.Schema({
     studyName: String,
@@ -16,6 +17,15 @@ const studySchema = new mongoose.Schema({
     joinUsers: [{ type:mongoose.Schema.Types.ObjectId, ref: "User" }], 
     comments: [{type:mongoose.Schema.Types.ObjectId, ref:"Comment"}]
 });
+
+// studySchema.pre('remove', async function() {
+//     await Comment.remove({
+//         _id: {
+//             $in: this.comments
+//         }
+//     });
+// });
+
 module.exports = mongoose.model("Study", studySchema);
 
 // Study.find()
@@ -25,7 +35,7 @@ module.exports = mongoose.model("Study", studySchema);
 //       select: ['username', 'content']
 //     },
 //     {
-//       path: 'user',
+    //       path: 'user',
 //       select: ['nickname', 'thumbnail']
 //     }
 //   ])

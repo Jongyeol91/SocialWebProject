@@ -5,7 +5,6 @@ const Study = require('../models/study');
 const User = require('../models/user');
 const passport = require('passport');
 
-
 router.get("/", (req, res) => {
     Study.find({},(err, studys) => {
         res.render("index.ejs", {studys: studys, currentUser: req.user});
@@ -14,7 +13,7 @@ router.get("/", (req, res) => {
 
 //회원가입 창
 router.get("/register", (req, res) => {
-    res.render("register.ejs");
+    res.render("auth/register.ejs");
 });
 
 // 회원가입
@@ -25,7 +24,7 @@ router.post("/register", (req, res) => {
     User.register(newUser, password, (err, user)=>{
         if(err){
             console.log(err);
-            res.render("register.ejs");
+            res.render("auth/register.ejs");
         }
         // 가입 후 로그인 바로 진행 (id중복은 passport에서 자동 검사)
         passport.authenticate("local")(req, res, () => {
@@ -37,13 +36,12 @@ router.post("/register", (req, res) => {
 
 //로그인 창
 router.get("/login", (req, res) => {
-    res.render("login.ejs")
+    res.render("auth/login.ejs");
 });
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect:"/",
-    failureRedirect:"login"
-}), (req, res) => {
+router.post("/login", passport.authenticate("local"), (req, res) => {
+        res.redirect(req.session.returnTo || '/');
+        delete req.session.returnTo;
 });
 
 router.get("/logout", (req, res) => {
@@ -55,6 +53,5 @@ function isLoggedIn(req, res, next){
     if (req.isAuthenticated()) return next();
     else res.redirect("/login");
 }
-
 
 module.exports = router;

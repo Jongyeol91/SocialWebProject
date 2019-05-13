@@ -1,0 +1,29 @@
+<%-include("../partials/header")-%>
+
+<form action="/study/<%= foundStudy._id %>/edit?_method=patch" method="post">
+    <div class="editbox">
+    <h1>스터디 수정</h1>
+        <div class="textbox">
+            <input type="text" name="study[studyName]" value="<%=foundStudy.studyName%>">
+            <label>스터디 이름</label>
+        </div>
+        <div class="textbox">
+            <input type="text" name="study[location]" value="<%=foundStudy.location%>">
+            <label>위치</label>
+        </div>
+        <div class="textbox">
+            <input type="text" name="study[imgurl]" value="<%=foundStudy.imgurl%>">
+            <label>이미지</label>
+        </div>
+        <button type="submit" id="btn">스터디 수정하기</button>
+    </div>
+
+    <div class="discriptionbox">
+        <div class="textbox">
+            <input type="text" name="study[description]" value="<%= foundStudy.discription %>">
+            <label>설명</label>
+        </div>
+    </div>
+</form>
+
+<%-include("../partials/footer")-%>

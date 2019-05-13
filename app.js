@@ -1,15 +1,17 @@
 const express       = require('express'),
+      app           = express(),
       ejs           = require('ejs'),
       bodyParser    = require('body-parser'),
-      app           = express(),
-      User          = require('./models/user'),
-      Study         = require('./models/study'),
-      Comment       = require('./models/comment'),
       mongoose      = require("mongoose"),
       passport      = require("passport"),
       LocalStrategy = require("passport-local");
       moment        = require('moment');
+      methodOverride = require('method-override'),
+      User          = require('./models/user'),
+      Study         = require('./models/study'),
+      Comment       = require('./models/comment');
 
+// require routes
 const commentRoutes  = require('./routes/comments'),
       studyRoutes    = require('./routes/studies'),
       indexRoutes    = require('./routes/index');
@@ -17,6 +19,7 @@ const commentRoutes  = require('./routes/comments'),
 mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride("_method"));
 
 // 세션 설정
 app.use(require("express-session")({
@@ -32,7 +35,7 @@ passport.use(new LocalStrategy(User.authenticate())); //User모델에 username�
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// res에 req.user을 항상 담는 미들웨어
+// 로컬에 req.user을 항상 담는 미들웨어 => currentUser로 ejs에서도 사용가능해짐
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();

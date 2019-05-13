@@ -1,0 +1,18 @@
+<%-include("../partials/header")-%>
+
+<div class="loginbox">
+    <h1>로그인</h1>
+    <div class="textbox">
+    <form action="/login" method="post">
+        <input type="text" name="username" required=""> 
+        <label><i class="fas fa-user"></i>이름</label>
+    </div>
+    <div class="textbox">
+        <input type="password" name="password" required=""> 
+        <label><i class="fas fa-key"></i>비밀번호</label>
+    </div>
+        <button type="submit">로그인</button>
+    </form>
+</div>
+
+<%-include("../partials/footer")-%>
