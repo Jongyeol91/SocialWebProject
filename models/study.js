@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Comment = require('./comment');
 
 const studySchema = new mongoose.Schema({
     studyName: String,
