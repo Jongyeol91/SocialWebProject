@@ -1,24 +1,26 @@
 <%-include("../partials/header")-%>
-     
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
+
+<div class="container-fluid">
     <div class="row">
-        <div class ="col-md-3">
+        <div class ="col-md-2">
             <p class="lead">퍼팩트 스터디</p>
             <div class = "list-group">
                 <li class="list-group-item active"></li>
                 <li class="list-group-item"></li>
-                <li class="list-group-item"></li>
+                <li class="list-group-item" id="aaa"></li>
             </div>
         </div>
-
         <div class="col-md-6">
-            <div class=thumbnail>
+            <div class="card">
                 <img calss="img-responsive" src="<%= foundStudy.img %>" >
                 <div class="caption-full">
-                    <p class="pull-right">스터디 개설일: <%= moment(foundStudy.makedDate).format("YYYY년 MM월 DD일") %></p>
+                    <p class="pull-right"> 스터디 개설일: <%= moment(foundStudy.makedDate).format("YYYY년 MM월 DD일") %> </p>
                     <h4><a><%= foundStudy.studyName %></a></h4>
-                    <p>스터디 만든이: <em><%=foundStudy.author.username%></em></p>
-                    <p>스터디 설명: <%=foundStudy.description%></p>
-                    <p>스터디 위치: <%= foundStudy.location %><p>
+                    스터디 만든이: <em><%=foundStudy.author.username%></em> <p>
+                    스터디 설명: <%=foundStudy.description%><p>
+                    스터디 위치: <%= foundStudy.location %><p>
+                    가입현황:<%=foundStudy.joinUsers.username%>
                     <!--스터디 삭제-->
                     <% if (currentUser && currentUser._id.equals(foundStudy.author.id)) { %>
                         <form id="delete-form" action ="/study/<%= foundStudy._id %>/delete?_method=delete" method="POST">
@@ -27,15 +29,14 @@
                         <!-- button대신 a태그 사용해야 가능-->
                         <a class="pull-right btn btn-xs btn-warning" href="/study/<%= foundStudy._id %>/edit"> 수정하기</a>
                     <% } %>
-                        <a class="pull-right btn btn-xs btn-normal" href="/study/<%= foundStudy._id %>/user/new" method="POST"> 가입하기</a>
-                        adsfsd
+                        <a class="pull-right btn btn-xs btn-primary" href="/study/<%= foundStudy._id %>/user/new" method="POST"> 가입하기</a>
                 </div>
             </div>
             <div class="well">
                 <div class="text-right">
                     <form action="/study/<%= foundStudy._id %>/comment/new" method="POST">
                         <input type="text" name="content">
-                        <button>입력</button>
+                        <button class="btn btn-sm btn-light">입력</button>
                         <hr>
                     </form>
                 </div>
@@ -46,7 +47,7 @@
                             <strong><%= comment.author.username %></strong>
                             <span class="pull-right"><%= moment(comment.createdDate).format("YYYY년 MM월 DD일") %></span>
                             <%= comment.content %>
-                            <% if(currentUser && currentUser._id.equals(comment.author._id)){ %>
+                            <% if(currentUser && currentUser._id.equals(comment.author._id)) { %>
                                 <a class="btn btn-xs btn-warning" href="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/edit">수정하기</a>
                                 <form id="delete-form" action ="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/delete?_method=delete" method="POST">
                                     <button class="btn btn-xs btn-danger" type="submit">삭제하기</button> 
@@ -58,6 +59,50 @@
                 </div>
             </div> 
         </div> 
+        <div class="col-md-4">
+            <div id="map" style="width:100%;height:400px;"></div>
+        </div>
     </div>
-               
+</div>
+<% foundStudy %>
+<script type="text/javascript">
+var mapContainer = document.getElementById('map');
+mapOption = { 
+    center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
+    level: 6 
+};
+
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+window.onload = function() {  
+    fetch("/study/getlatlng", {
+        method:"post",
+        headers: new Headers({ 'Content-Type': "application/json" }),
+        body: JSON.stringify({id: '<%= foundStudy._id %>'})
+    })
+    .then((res)=> { return res.json() })
+    .then((latlngs) => { 
+        latlngs.forEach((latlng) => {
+            setMarker(latlng);
+            panTo(latlng)
+            console.log(latlng);
+        })
+    })
+}
+
+function setMarker(latlng) {
+  var markerPosition  = new daum.maps.LatLng(latlng.lng, latlng.lat); 
+  var marker = new daum.maps.Marker({
+    position: markerPosition
+  });
+    marker.setMap(map);
+}
+
+function panTo(latlng) {
+    var moveLatLon = new daum.maps.LatLng(latlng.lng, latlng.lat);
+    map.panTo(moveLatLon);            
+}  
+
+</script>
+
 <%-include("../partials/footer")-%>

@@ -16,7 +16,8 @@ router.post("/study/:id/comment/new", middleware.isLoggedIn, (req, res) => {
     let studyId = req.params.id;
     comment.save(function(err){
         Study.findById(studyId, (err, foundStudy) => {
-            if (err) {
+            if (err || !foundStudy) {
+                req.flash("error", "댓글을 찾지 못했습니다.")
                 console.log(err);
             } else {
                 foundStudy.comments.push(comment._id);
@@ -58,7 +59,5 @@ router.patch("/study/:id/comments/:comment_id/edit", middleware.isCommentOwnerSh
         } 
     });
  });
-
-
 
 module.exports = router;

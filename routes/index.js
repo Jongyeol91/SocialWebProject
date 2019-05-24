@@ -24,6 +24,7 @@ router.post("/register", (req, res) => {
     User.register(newUser, password, (err, user)=>{
         if(err){
             console.log(err);
+            req.flash("error", err.message);
             res.render("auth/register.ejs");
         }
         // 가입 후 로그인 바로 진행 (id중복은 passport에서 자동 검사)
@@ -39,19 +40,22 @@ router.get("/login", (req, res) => {
     res.render("auth/login.ejs");
 });
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
-        res.redirect(req.session.returnTo || '/');
+router.post("/login", passport.authenticate("local", {
+    failureRedirect: "/login"
+}), (req, res) => {
+    if(req.session.returnTo){
+        res.redirect(req.session.returnTo);
         delete req.session.returnTo;
+    } else {
+        res.redirect("/");
+    }
 });
 
 router.get("/logout", (req, res) => {
+    delete req.session.returnTo;
+    req.flash("success", "성공적으로 로그아웃 되었습니다.");
     req.logOut();
     res.redirect("/");
 });
-
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()) return next();
-    else res.redirect("/login");
-}
 
 module.exports = router;

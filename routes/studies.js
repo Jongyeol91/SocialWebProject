@@ -4,6 +4,17 @@ const Comment = require('../models/comment');
 const Study = require('../models/study');
 const User = require('../models/user');
 const middleware = require('../middleware'); // index.js의 파일명은 따로 임포트 해줄 필요가 없음
+const NodeGeocoder = require('node-geocoder');
+ 
+const options = {
+  provider: 'google',
+  httpAdapter: 'https',
+  apiKey: "AIzaSyA4EcALKivj27CcNiATxnqau5PTsX8fBio",
+  formatter: null,
+  language:'ko'
+};
+ 
+const geocoder = NodeGeocoder(options);
 
 // 개별 스터디 보기
 router.get("/:id", (req, res) => {
@@ -16,43 +27,59 @@ router.get("/:id", (req, res) => {
             model: User
         }
     }).populate("joinUsers").exec((err, foundStudy) => {
-        //console.log('foundstudy', foundStudy);
-        res.render("study/eachStudy.ejs", {
-            foundStudy: foundStudy,
-            moment: moment
-        });
+        if (err || !foundStudy) {
+            req.flash("error", "스터디를 찾을수 없습니다.");
+            res.redirect("/");
+        }
+            //console.log('foundstudy', foundStudy);
+            res.render("study/eachStudy.ejs", { foundStudy: foundStudy, moment: moment });
     });
 });
 
 //스터디 만들기 창
 router.get("/", (req, res) => {
-    res.render("study/makeStudy.ejs");
+    if (req.user) {
+        res.render("study/makeStudy.ejs");
+    } else {
+        req.flash("error", "스터디를 만들기 위해 로그인을 먼저 하세요");
+        res.redirect("/");
+    }
 });
 
 // 스터디 생성
 router.post("/", middleware.isLoggedIn, (req, res) => {
-    let studyName = req.body.studyName;
-    let discription = req.body.discription;
-    let location = req.body.location;
-    let img = req.body.imgurl;
-    let author = {
+    const studyName = req.body.data.studyName;
+    const description = req.body.data.description;
+    const img = req.body.data.imgurl;
+    const latlngs = req.body.checkedLocs.map((cv) => {
+        return {"lat": cv.lat, "lng": cv.lng}
+    });
+    const author = {
         id: req.user._id,
         username: req.user.username
     };
-
-    let newStudy = new Study({
-        studyName: studyName,
-        img: img,
-        description: discription,
-        location: location,
-        author: author
-    });
+    const newStudy = {studyName: studyName, img: img, description: description, author:author, latlngs:latlngs};
+    console.log("newStudy", newStudy);
+    
     Study.create(newStudy, (err, newlycreated) => {
         if (!err) {
             console.log("새로운 스터디 생성: ", newlycreated);
         }
+        req.flash("success", req.user.username+ "님 성공적으로 스터디를 개설했습니다. 퍼팩트 스터디가 응원합니다!");
         res.redirect("/");
     });
+});
+
+// eachStudy에서 오는 ajax 
+router.post("/getlatlng", (req, res) => {
+    let id = req.body.id;
+    Study.findById(id, (err, result) => { 
+        res.send(result.latlngs);
+     });
+});
+    
+router.get("/:id/user/new", middleware.isLoggedIn, (req, res) => {
+    res.redirect("/");
 });
 
 // 스터디 가입 (user을 study에 추가)
@@ -91,7 +118,7 @@ router.delete("/:id/delete", middleware.isOwnerShip, (req, res) => {
             console.log(err);
             res.redirect("/study/" + req.params.id);
         } else {
-            console.log("스터디 삭제 성공");
+            req.flash("success", "성공적으로 삭제했습니다.")
             res.redirect("/");
         }
     });

@@ -1,7 +1,8 @@
 body{
-    padding-top:40px; 
+    padding-top:0px;
     background: url(//subtlepatterns.com/patterns/scribble_light.png);
-    margin: 50px;
+    
+    margin: 70px 70px 70px 70px;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -10,11 +11,10 @@ body{
     flex-wrap: wrap;
   }
 
-
 img {
     width: 400px; /* You can set the dimensions to whatever you want */
     height: auto;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 #delete-form{
@@ -27,6 +27,8 @@ img {
 
 #columns figure{
     display: inline-block;
+    width: 90%;
+    height: 90%;
     border: 1px solid rgba(0,0,0,0.2);
     margin-bottom: 15px;
     padding:10px;
@@ -38,6 +40,9 @@ img {
 
 #columns figure img{
     width: 100%;
+    height: 180px;
+    object-fit: cover;
+    object-position: center center;
 }
 
 #columns figure figcaption{
@@ -52,15 +57,19 @@ img {
     transform: translateY(-7px);
 }
 
-.thumbnail img{
-    width: 100%
+.card img{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    background-position: center center;
+    object-position: center center;
 }
 
-.thumbnail{
+.card{
     padding: 0;
 }
 
-.thumbnail .caption-full{
+.card .caption-full{
     padding: 9px;
 }
 
@@ -108,7 +117,6 @@ img {
     letter-spacing: 1px;
     
 }
-
 
 .loginbox .textbox label{
     position: absolute;

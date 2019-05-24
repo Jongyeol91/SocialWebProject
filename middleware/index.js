@@ -5,13 +5,13 @@ const middlewareObj = {};
 middlewareObj.isOwnerShip = function (req, res, next) {
     if (req.isAuthenticated()) {
         Study.findOne({ _id: req.params.id }, (err, foundStudy) => {
-            if (err) {
+            if (err || !foundStudy) {
+                console.log(err);
                 res.redirect("back");
-                console.log("찾기 오류");
             } else if (foundStudy.author.id.equals(req.user._id)) {
                 return next();
             } else {
-                console.log("다른 회원이 수정하려고 함");
+                req.flash("error", "스터디 수정 권한이 없습니다.");
                 res.redirect("back");
             }
         });
@@ -23,10 +23,12 @@ middlewareObj.isOwnerShip = function (req, res, next) {
 
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
+        req.flash("success", req.user.username + "님 환영합니다.");
+
         return next();
     } else {
+        req.flash("error", "로그인을 먼저 하십시오");
         req.session.returnTo = "/study/" + req.params.id;
-        console.log(req.session.returnTo);
         res.redirect("/login");
     }
 };
@@ -35,14 +37,17 @@ middlewareObj.isCommentOwnerShip = function (req, res, next) {
     if (req.isAuthenticated()) {
         Comment.findOne({ _id: req.params.comment_id }, (err, foundComment) => {
             if (err) {
+                req.flash("error", "찾는 스터디가 없습니다");
                 res.redirect("back");
             } else if (foundComment.author.equals(req.user._id)) {
                 next();
             } else {
+                req.flash("error", "권한이 없습니다.");
                 res.redirect("back");
             }
         });
     } else {
+        req.flash("error", "로그인을 하세요.");
         res.redirect("/login");
     }
 };

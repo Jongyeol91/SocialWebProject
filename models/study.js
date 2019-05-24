@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const studySchema = new mongoose.Schema({
     studyName: String,
     description: String,
-    location: String,
+    latlngs: [],
     img: String,
     makedDate: { type: Date, default: Date.now },
-    author:{
+    author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
