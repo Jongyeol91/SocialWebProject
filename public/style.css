@@ -6,16 +6,12 @@ body{
     font-family: 'Open Sans', sans-serif;
 }
 
-.flex {
-    display: flex;
-    flex-wrap: wrap;
-  }
 
-img {
-    width: 400px; /* You can set the dimensions to whatever you want */
-    height: auto;
+#mainCard {
+    height: 200px;
     object-fit: cover;
 }
+
 
 #delete-form{
     display: inline;

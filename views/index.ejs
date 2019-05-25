@@ -1,19 +1,61 @@
 <%-include("./partials/header")-%>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
+
 <div class="container-fluid">
-        <p> 개설된 스터디를 둘러보세요</p>
-        <a class="btn btn-primary btn-large" href="/register"> 회원가입 하기</a>    
-        <a class="btn btn-primary btn-large"  href ="/study">스터디 만들기</a>
-        </p>
-    
-<div id=columns>   
-        <% studys.forEach(function(study){ %>
-            <figure>     
-                <%= study.studyName %>
-                <img src ="<%=study.img%> ">
-               <figcaption> <a href ="/study/<%= study._id %>">read more</a></figcaption>
-            </figure>
-        <% }) %> 
+   
+	<p> 개설된 스터디를 둘러보세요</p>
+   <a class="btn btn-primary btn-large" href="/register"> 회원가입 하기</a>    
+   <a class="btn btn-primary btn-large"  href ="/study">스터디 만들기</a>
+   <p>    
+
+<div class="row">
+	<div class="col-md-6">
+				<% studys.forEach((study) => { %>
+				<div class="row border">
+					<div class="col-md-3 border justify-self-end align-self-center">
+						<img src="<%= study.img %>" id="mainCard" class="card-img" style="height:100px" alt="...">
+					</div>
+					<div class="col-md-9">
+					<div class="row border flex-column justify-content-around align-items-start " style="height:120px">
+							<div class="w-100 border">
+								<span class="badge badge-pill badge-danger d-inline"> 취업</span>
+								<div class="d-inline"> ncs같이 풀어요 열심히 할사람만</div>
+							</div>
+							<div class="w-100 border" style="font-size:small">문제풀이 / 노원 / 4명 / </div>
+							<div class="w-100 border">
+								<a class="btn btn-outline-danger btn-sm" href ="/study/<%= study._id %>"><i class="far fa-heart"></i></a>
+								<a class="btn btn-outline-success btn-sm" href ="/study/<%= study._id %>">둘러보기</a>
+						<!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
+							</div>
+					</div>
+					</div>
+				</div>
+				<hr>
+			<% }) %>
+	</div>
+
+			<div class="col-md-6">
+				<div id="map" style="width:100%;height:600px;"></div>
+			</div>	
 </div>
-</div>
+
+	
+	
+
+	
+	
+
+</div>	
+
+
+<script>
+var mapContainer = document.getElementById('map'); 
+mapOption = { 
+    center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
+    level: 6 
+};
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+</script>
 
 <%-include("./partials/footer")-%>
