@@ -1,60 +1,109 @@
 <%-include("./partials/header")-%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
 
-<div class="container-fluid">
-   
-	<p> 개설된 스터디를 둘러보세요</p>
-   <a class="btn btn-primary btn-large" href="/register"> 회원가입 하기</a>    
-   <a class="btn btn-primary btn-large"  href ="/study">스터디 만들기</a>
-   <p>    
+  
 
-<div class="row">
-	<div class="col-md-6">
-				<% studys.forEach((study) => { %>
-				<div class="row border">
-					<div class="col-md-3 border justify-self-end align-self-center">
-						<img src="<%= study.img %>" id="mainCard" class="card-img" style="height:100px" alt="...">
-					</div>
-					<div class="col-md-9">
-					<div class="row border flex-column justify-content-around align-items-start " style="height:120px">
-							<div class="w-100 border">
-								<span class="badge badge-pill badge-danger d-inline"> 취업</span>
-								<div class="d-inline"> ncs같이 풀어요 열심히 할사람만</div>
-							</div>
-							<div class="w-100 border" style="font-size:small">문제풀이 / 노원 / 4명 / </div>
-							<div class="w-100 border">
-								<a class="btn btn-outline-danger btn-sm" href ="/study/<%= study._id %>"><i class="far fa-heart"></i></a>
-								<a class="btn btn-outline-success btn-sm" href ="/study/<%= study._id %>">둘러보기</a>
-						<!--<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
-							</div>
-					</div>
-					</div>
-				</div>
-				<hr>
+	<div class="row">
+		<div class="col-md-7 ml-2">
+			<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">no.</th>
+					<th scope="col"><i class="far fa-calendar-alt"></i> 등록일</th>
+					<th scope="col">스터디</th>
+					<th scope="col">유형</th>
+					<th scope="col"><i class="fas fa-map-marker-alt"></i> 위치</th>
+				</tr>
+			</thead>
+			<tbody>
+			<% studys.forEach((study) => { %>
+				<tr>
+					<th scope="row">1</th>
+					<td><div class="text-muted"><%= moment(study.makedDate).format("YY.MM.DD.") %></div></td>
+					<td><a class="text-decoration-none" href ="/study/<%= study._id %>"> <%=study.studyName%> </a></td>
+					<td>
+						<div class="" style="font-size:small"> 
+							<% study.categories.forEach((category) => { %>
+								<% if (category==="사기업") { %>
+									<a href="#" class="badge badge-danger">사기업</a>
+								<% } else if (category === "공기업"){ %>
+									<a href="#" class="badge badge-primary">공기업</a>
+								<% } else if (category === "인적성"){ %>
+									<a href="#" class="badge badge-info">인적성</a> 
+								<% } else if (category === "면접") { %>
+									<a href="#" class="badge badge-info">면접</a>
+								<% } else if (category === "자소서"){ %>
+									<a href="#" class="badge badge-info">자소서</a> 
+								<% } %>
+							<% }) %>
+						</div>
+					</td>
+					<td><div class="text-muted"><%=study.studyAddress%> </div></td>
+				</tr>
 			<% }) %>
+				</tbody>
+			</table>		
+
+			<div class="row justify-content-center">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+								<span class="sr-only">Previous</span>
+							</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">1</a></li>
+						<li class="page-item"><a class="page-link" href="#">2</a></li>
+						<li class="page-item"><a class="page-link" href="#">3</a></li>
+						<li class="page-item">
+							<a class="page-link" href="#" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+		</div>		
+
+	<!--지도-->
+	<div class="col sticky-top">
+		<div id="map" style="width:100%;height:500px;"></div>
 	</div>
-
-			<div class="col-md-6">
-				<div id="map" style="width:100%;height:600px;"></div>
-			</div>	
-</div>
-
+		
+</div> <!-- container-->
 	
 	
-
-	
-	
-
-</div>	
-
 
 <script>
 var mapContainer = document.getElementById('map'); 
 mapOption = { 
     center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
-    level: 6 
+    level: 9 
 };
 var map = new daum.maps.Map(mapContainer, mapOption); 
+
+window.onload = function() {  
+    fetch("/study/allGetlatlng", {
+        method:"post",
+    })
+    .then((res)=> { return res.json() })
+    .then((latlngs) => { 
+		console.log(latlngs);		  // [ [{},{},{}] ...]
+        latlngs.forEach((latlng) => {
+			setMarker(latlng)
+		})
+    })
+}
+function setMarker(latlng) {
+  var markerPosition  = new daum.maps.LatLng(latlng.lat, latlng.lng); 
+  var marker = new daum.maps.Marker({
+    position: markerPosition
+  });
+    marker.setMap(map);
+}
 
 </script>
 

@@ -4,10 +4,11 @@ const Comment = require('../models/comment');
 const Study = require('../models/study');
 const User = require('../models/user');
 const passport = require('passport');
+const moment = require('moment');
 
 router.get("/", (req, res) => {
     Study.find({},(err, studys) => {
-        res.render("index.ejs", {studys: studys, currentUser: req.user});
+        res.render("index.ejs", {studys: studys, moment: moment, currentUser: req.user});
     });
 });
 

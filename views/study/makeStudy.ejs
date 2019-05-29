@@ -3,10 +3,34 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-4">
-        <div class="form-group">
+    <div class="col-md-4 font-weight-bold">
+        <label class="d-block" >스터디 종류</label>
+        <div class="form-group font-weight-light">
+          <div class="custom-control custom-checkbox d-inline " id="checkbox">
+            <input type="checkbox" name="category" class="custom-control-input" id="customCheck1" value="사기업">
+            <label class="custom-control-label" for="customCheck1">사기업</label>
+          </div>
+          <div class="custom-control custom-checkbox d-inline">
+            <input type="checkbox" name="category" class="custom-control-input" id="customCheck2" value="공기업">
+            <label class="custom-control-label" for="customCheck2">공기업</label>
+          </div>
+          <div class="custom-control custom-checkbox d-inline">
+            <input type="checkbox" name="category" class="custom-control-input" id="customCheck3" value="인적성">
+            <label class="custom-control-label" for="customCheck3">인적성</label>
+          </div>
+          <div class="custom-control custom-checkbox d-inline">
+            <input type="checkbox" name="category" class="custom-control-input" id="customCheck4" value="면접">
+            <label class="custom-control-label" for="customCheck4">면접</label>
+          </div>
+          <div class="custom-control custom-checkbox d-inline">
+            <input type="checkbox" name="category" class="custom-control-input" id="customCheck5" value="자소서">
+            <label class="custom-control-label" for="customCheck5">자소서</label>
+          </div>
+        </div>
+     
+        <div class="form-group mt-2">
             <label for="studyName">스터디 이름</label>
-            <input type="text" class="form-control" name ="studyName" id="studyName" placeholder="ncs">
+            <input type="text" class="form-control" name ="studyName" id="studyName" maxlength="10" placeholder="ncs">
         </div>
         <div class="form-group">
             <label for="imgurl">이미지</label>
@@ -32,28 +56,60 @@
         <button class="btn btn-primary btn-block" id="makeStudy" type="submit">스터디 만들기</button>
     </div>
     <div class="col-md-8">
-        <label for="map">지도</label>
+        <label for="map">스터디 희망 장소를 검색하고 등록하세요</label>
         <div id="map" style="width:100%;height:300px;"></div>
         <div class="form-group">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 mt-2">
                     <input class="form-control" type="text" id="searchInput">
                 </div>
-                <div class="col-md-4">
-                    <input class="btn btn-primary btn-block" type="button" value="장소 등록" id="locbtn">
+                <div class="col-md-4 mt-2">
+                    <input class="btn btn-primary btn-block" type="button" value="검색/등록" id="locbtn" >
                 </div>
                 <div>
                     <div id="article"></div>
+                    <button id="test"></button>
                 </div>
             </div>
         </div>
     </div>
+    
+  <div class="row">
+  <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+  </ul>
+</nav>
   </div>
+
+  </div>
+
 </div>
 
 <!-- 스크립트 태그 _ 지도 설정-->
+
+
+<script type="text/javascript" src="module.js"></script>
+
 <script>
 
+document.getElementById('test').addEventListener('click', getCheckedCategoriesFor);
+
+// 로컬검색
 document.getElementById('locbtn').addEventListener('click', loadText);
 function loadText() {
   const inputvalue = document.getElementById("searchInput").value
@@ -67,9 +123,9 @@ function loadText() {
   })
     .then((res) => { return res.json() })
     .then((resultJson) => { 
-
+      console.log(resultJson)
       mappedLOCS = resultJson.documents.map((document) => {
-        return {name: document.place_name, address: document.address_name, 
+        return {name: document.place_name, addressName: document.address_name, 
         id:document.id, x:document.x, y:document.y}})
 
         document.getElementById("article").innerHTML =""
@@ -77,47 +133,58 @@ function loadText() {
         document.getElementById("article").innerHTML +=
           `
           <input type="checkbox" id="${element.id}" class="latlng" 
-          value="${element.x + "|" + element.y}"
+          value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
           onchange="checkAddress(this, ${element.id});"> 
-          ${element.name}: ${element.address} <p>
+          ${element.name}: ${element.addressName} <p>
           `
     });
   });
 }// loadText function 
 
+
+
+
 // 스터디 만들기 버튼 클릭
-document.getElementById('makeStudy').addEventListener('click', mapWithForm);
+document.getElementById('makeStudy').addEventListener('click', makeStudy);
 var checkedLocs = [];
 
-function mapWithForm() {
+function makeStudy() {
   const studyName = document.getElementById('studyName').value;
+  const categories = getCheckedCategoriesFor();
   const imgurl = document.getElementById('imgurl').value;
+  const latlngs = checkedLocs;
   const recruNum = document.getElementById('recruNum').value;
   const description = document.getElementById('description').value;
-  const data = { studyName, imgurl, recruNum, description, }
+  const data = { studyName, categories, latlngs, imgurl, recruNum, description, }
 
   fetch("/study", { 
       method: "POST",
       redirect: 'follow',
       headers: new Headers({ 'Content-Type': "application/json" }),
-      body: JSON.stringify({ checkedLocs: checkedLocs, data: data })
+      body: JSON.stringify({ data: data })
   }).then(window.location.href = "http://localhost:3000")
+}//make study
+
+
+// 카테고리 체크된것 가져오기
+function getCheckedCategoriesFor() {
+  const checkboxesNodeList = document.querySelectorAll(`input[name="category"]:checked`)
+  return [].map.call(checkboxesNodeList, el => el.value); //nodeList 배열로 바꾸기
 }
 
-// 체크박스 클릭감지
-function checkAddress(checkbox, id) {
+// 로컬 체크박스 클릭감지
+function checkAddress(checkbox, locId) {
   if (checkbox.checked) {
-    let latlngs = getLatLng(checkbox);
-    let lat = latlngs[0];
-    let lng = latlngs[1]; // x축 Latitude 위도  y축 longtitude 경도
-    checkedLocs.push({"lat": lat, "lng": lng});
-    panTo(lat, lng);
-    setMarker(lat, lng, id, true);
+    let latlngObj = getLatLng(checkbox);
+    checkedLocs.push({"lat": latlngObj.lat, "lng": latlngObj.lng, "locationName": latlngObj.locationName, "addressName": latlngObj.addressName});
+    console.log("checkedLocs", checkedLocs);
+    panTo(latlngObj);
+    marker.setMarker(latlngObj, locId);
   } else {
-    let latlngs = getLatLng(checkbox);
-    let lat = latlngs[0];
-    let lng = latlngs[1];
-    setMarker(lat, lng, id, false);
+    let latlngObj = getLatLng(checkbox);
+    let index = checkedLocs.findIndex(e => e.lat === latlngObj.lat && e.lng == latlngObj.lng );
+    if (index !== -1) checkedLocs.splice(index, 1);
+    marker.deleteMarker(locId);
   }
 }
 
@@ -130,25 +197,28 @@ mapOption = {
 
 var map = new daum.maps.Map(mapContainer, mapOption); 
 
-const markers = []; //이것을 어떻게 처리해야 할지 고민(클로저?)
 
-// 마커 만들기
-function setMarker(lat, lng, id, flag) {
-  var markerPosition  = new daum.maps.LatLng(lng, lat); 
-  var marker = new daum.maps.Marker({
-    position: markerPosition
-  });
-  if (flag) {
-    marker.setMap(map);
-    markers.push({marker, id})
-  } else {
-    markers.forEach((element) => {
-      if (element.id === id ) {
-      element.marker.setMap(null);
-      }
-    });
-  }
-}
+// 마커 만들기 즉시 호출 함수 표현식, 모듈 패턴 활용
+const marker = (function(){
+    const markers=[];
+    return {
+      setMarker: function(latlngObj, locId) {
+        const markerPosition  = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng); 
+        const marker = new daum.maps.Marker({
+        position: markerPosition
+      });
+        marker.setMap(map);
+        markers.push({marker, locId})
+    },
+    deleteMarker: function(locId) {
+      markers.forEach((element) => {
+        if (element.locId === locId ) {
+          element.marker.setMap(null);
+        }
+      })
+    }
+    }
+  })();
 
 //맵 중심 한방에 이동하기
 // function setCenter(lat, lng) {            
@@ -157,16 +227,19 @@ function setMarker(lat, lng, id, flag) {
 // }
 
 // 맵 중심 부드럽게 이동하기
-function panTo(lat, lng) {
-    var moveLatLon = new daum.maps.LatLng(lng, lat);
+  function panTo(latlngObj) {
+    var moveLatLon = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng);
     map.panTo(moveLatLon);            
 }       
 
 // 체크박스 좌표 구하기
 function getLatLng(checkbox) {
     stringLatLng = checkbox.value;
-    latlngs = stringLatLng.split("|");
-    return latlngs;
+    console.log(stringLatLng)
+    const latlngArr = stringLatLng.split("|");
+    const latlngObj = {"lat": latlngArr[1], "lng": latlngArr[0], "locationName": latlngArr[2], "addressName": latlngArr[3]}
+    console.log(latlngObj)
+    return latlngObj
 }
 </script>
 

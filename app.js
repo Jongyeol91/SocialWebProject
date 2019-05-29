@@ -6,25 +6,26 @@ const express       = require('express'),
       bodyParser    = require('body-parser'),
       mongoose      = require("mongoose"),
       passport      = require("passport"),
-      LocalStrategy = require("passport-local");
-      moment        = require('moment');
+      LocalStrategy = require("passport-local"),
+      moment        = require('moment'),
+      fs            = require("fs"),
+      path          = require("path"),
       methodOverride = require('method-override'),
       flash         = require('connect-flash'),
       User          = require('./models/user'),
       Study         = require('./models/study'),
-      Comment       = require('./models/comment'),
-      fs            = require("fs");
+      Comment       = require('./models/comment');
 
 // require routes
-const commentRoutes  = require('./routes/comments'),
-      studyRoutes    = require('./routes/studies'),
-      indexRoutes    = require('./routes/index');
-      kakaoLocalRoutes      = require('./routes/kakaoLocal');
+const commentRoutes     = require('./routes/comments'),
+      studyRoutes       = require('./routes/studies'),
+      indexRoutes       = require('./routes/index');
+      kakaoLocalRoutes  = require('./routes/kakaoLocal');
       
 mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json()); // == express.json() 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname + '/public')));
 app.use(methodOverride("_method"));
 
 // 세션 설정
@@ -54,18 +55,6 @@ app.use(indexRoutes);
 app.use("/study", studyRoutes);
 app.use(commentRoutes);
 app.use(kakaoLocalRoutes);
-
-app.get("/ajax", (req, res) => {
-   fs.readFile('ajax.html', 'utf8', function(err, data){
-       if(err){
-           console.loge(err);
-        }
-        console.log(data);
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(data); // html로드
-   });
-    //res.sendFile(__dirname+ '/ajax.html');
-});
 
 app.listen(3000, () => {
     console.log("server has started port on 3000");

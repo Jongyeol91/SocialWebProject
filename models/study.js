@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const studySchema = new mongoose.Schema({
     studyName: String,
+    studyAddress: String,
+    categories: [],
+    recruNum: String,
     description: String,
     latlngs: [],
     img: String,
