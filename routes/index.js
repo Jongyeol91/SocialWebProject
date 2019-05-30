@@ -7,8 +7,28 @@ const passport = require('passport');
 const moment = require('moment');
 
 router.get("/", (req, res) => {
-    Study.find({},(err, studys) => {
-        res.render("index.ejs", {studys: studys, moment: moment, currentUser: req.user});
+    const perPage = 2;
+    const pageQuery = parseInt(req.query.page);
+    const pageNumber = pageQuery ? pageQuery : 1;
+    
+    // pageNumber = 사용자가 클릭한 page 숫자 초기화면 설정을 위해 pageQuery없다면(클릭x=초기진입) 1로 지정
+    // skip  = 말그대도 skip의 숫자만큼 db에서 다큐먼트를 조회하지 않음
+    // limit = 조회할 다큐먼트 수
+    // count = 결과로 나온 다큐먼트의 수 
+    Study.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function (err, studys) {
+        Study.countDocuments().exec(function (err, count) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render("index.ejs", {
+                    studys,
+                    moment,
+                    currentUser: req.user,
+                    current: pageNumber,
+                    pages: Math.ceil(count / perPage)
+                });
+            }
+        });
     });
 });
 

@@ -44,26 +44,52 @@
 				</tbody>
 			</table>		
 
+<!--pagination-->
 			<div class="row justify-content-center">
-				<nav aria-label="Page navigation example">
-					<ul class="pagination">
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-								<span class="sr-only">Previous</span>
-							</a>
-						</li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item">
-							<a class="page-link" href="#" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-								<span class="sr-only">Next</span>
-							</a>
-						</li>
-					</ul>
-				</nav>
+			<nav aria-label="Page navigation">
+    <% if (pages && pages > 0) { %>
+    <ul class="pagination justify-content-center">
+        <% if (current == 1) { %>
+        <li class="page-item disabled"><a class="page-link">First</a></li> <!-- 1이면 "first" 비활성화 -->
+        <% } else { %>
+        <li><a class="page-link" href="/study">First</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
+        <% } %>
+ 
+        <% if (current == 1) { %>
+        	<li class="page-item disabled"><a class="page-link">«</a></li> <!--1이면 "<<" 비활성화 -->
+        <% } else { %>
+        	<li><a class="page-link" href="/?page=<%= Number(current) - 1 %>">«</a></li> <!-- 1아니면 "<<" 활성화, 이전 페이지(current - 1) -->
+        <% } %>
+ 
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <!-- current가 5보다 크면 i = current-4, 아니면 i = 1 -->
+        <% if (i !== 1) { %>
+        	<li class="page-item disabled"><a class="page-link">...</a></li> <!-- i가 1이 아니면 "앞"..." 비활성화 -->
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %><!-- 반복문 : i가 current + 4 보다 크고 pages(반올림된 페이지) 이하 까지 -->
+        	<% if (i == current) { %>																			
+        		<li class="active"><a class="page-link"><%= i %></a></li>		<!-- i가 current를 지날때, href 비생성, 클릭시점의 새로운 시작, 즉 새로운 현재 페이지 -->
+        	<% } else { %>																																
+						<li><a class="page-link" href="/?page=<%= i %>"><%= i %></a></li><!-- i가 current아닐때는 반복문의 i만큼 링크 생성 -->
+       		 <% } %>																																			<!-- ex) 8을 누르면 8 9 10 11 12 생성 -->
+        	<% if (i == Number(current) + 4 && i < pages) { %> 														<!-- 반복분 끝 도착 -->
+        		<li class="page-item disabled"><a class="page-link">...</a></li> 						<!-- "뒤..." 비활성화 -->
+        	<% } %>
+        <% } %> 																											<!-- 반복문 끝 -->
+ 
+        <% if (current == pages) { %>					
+        	<li class="page-item disabled"><a class="page-link">»</a></li> <!-- 만약 current가 끝 페이지라면 ">>" 비활성화 -->
+        <% } else { %>
+        	<li><a class="page-link" href="/?page=<%= Number(current) + 1 %>">»</a></li> <!-- 뒷 페이지가 더 있다면 ">>" 활성화(href= current+1) -->
+        <% } %>
+ 
+        <% if (current == pages) { %>
+       		<li class="page-item disabled"><a class="page-link">Last</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
+        <% } else { %>
+        	<li><a class="page-link" href="/?page=<%= pages %>">Last</a></li><!-- 그렇지 않다면 "last" 활성화 -->
+        <% } %>
+    </ul>
+    <% } %>
+</nav>
 			</div>
 
 		</div>		

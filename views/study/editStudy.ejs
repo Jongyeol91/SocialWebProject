@@ -1,4 +1,5 @@
 <%-include("../partials/header")-%>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
 
 <div class="container">
@@ -6,7 +7,7 @@
     <div class="col-md-4 font-weight-bold">
     
         <label class="d-block" >스터디 종류</label>
-        <div class="form-group font-weight-light">
+        <div class="form-group font-weight-light">  
           <div class="custom-control custom-checkbox d-inline " id="checkbox">
   
             <input type="checkbox" name="category" class="custom-control-input" id="customCheck1" value="사기업">
@@ -58,7 +59,6 @@
             <textarea class="form-control" id="description" name ="description[study]" value="<%=foundStudy.description%>" rows="5" required></textarea>
         </div>
         <input type="submit" class="btn btn-primary btn-block" id="makeStudy">수정하기</button>
-    
 
     </div>
     <div class="col-md-8">
@@ -82,69 +82,10 @@
   </div>
 </div>
 
-
-<!-- 스크립트 태그 _ 지도 설정-->
+<script type="text/javascript" src="/module.js"></script>
 
 <script>
-// window.onload=function(){
-//   checkCategories()
-// }
-
-function getCheckedCategoriesFor() {
-  const checkboxesNodeList = document.querySelectorAll(`input[name="category"]:checked`)
-  return [].map.call(checkboxesNodeList, el => el.value); //nodeList를 배열로 바꾸기
-}
-
-
-// function checkCategories() {
-    
-//     checkboxValueArr.forEach((e)=>{
-//       if( e=== "사기업") {
-//         document.getElementById("customCheck1").checked = true
-//       } else if (e === "공기업") {
-//         document.getElementById("customCheck2").checked = true
-//       } else if (e === "인적성") {
-//         document.getElementById("customCheck3").checked = true
-//       } else if (e === "면접") {
-//         document.getElementById("customCheck4").checked = true
-//       } else if (e === "자소서") {
-//         document.getElementById("customCheck5").prop("checked", checked);
-//       }
-//     })
-// }
-
-// 검색결과 가져오기
 document.getElementById('locbtn').addEventListener('click', loadText);
-function loadText() {
-  const inputvalue = document.getElementById("searchInput").value
-  console.log("client input value", inputvalue);
-  const myRequest = new Request("/getLocal");
-  
-  fetch(myRequest, { 
-    method: "POST",
-    headers: new Headers({ 'Content-Type': "application/json" }),
-    body: JSON.stringify({ txt: inputvalue })
-  })
-    .then((res) => { return res.json() })
-    .then((resultJson) => { 
-      
-      mappedLOCS = resultJson.documents.map((document) => {
-        return {name: document.place_name, addressName: document.address_name, 
-        id: document.id, x: document.x, y: document.y}})
-
-        document.getElementById("article").innerHTML =""
-        mappedLOCS.forEach(element => {
-        document.getElementById("article").innerHTML +=
-          `
-          <input type="checkbox" id="${element.id}" class="latlng" 
-          value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
-          onchange="checkCheckbox.checkAddress(this, ${element.id});"> 
-          ${element.name}: ${element.addressName} <p>
-          `
-    });
-  });
-}// loadText function 
-
 document.getElementById('makeStudy').addEventListener('click', makeStudy);
 
 // 스터디 수정하기 버튼 클릭
@@ -153,11 +94,9 @@ function makeStudy() {
   const categories = getCheckedCategoriesFor();
   const imgurl = document.getElementById('imgurl').value;
   const latlngs = checkCheckbox.getCheckedLocs();
-  console.log("latlngs", latlngs)
   const recruNum = document.getElementById('recruNum').value;
   const description = document.getElementById('description').value;
   const data = { studyName, categories, imgurl, latlngs, recruNum, description }
-  console.log(data)
 
   fetch("/study/<%= foundStudy._id %>/edit", { 
       method: "POST",
@@ -167,72 +106,6 @@ function makeStudy() {
   }).then(window.location.href = "http://localhost:3000")
 }// 수정하기
 
-const checkCheckbox = (function (){
-    var checkedLocs = [];
-    var closerData = "this is closer"
-    return {
-        checkAddress: function(checkbox, locId){
-            if (checkbox.checked) {
-                console.log("checkedLocs", checkedLocs);
-                let latlngObj = getLatLng(checkbox);
-                checkedLocs.push({"lat": latlngObj.lat, "lng": latlngObj.lng, "locationName": latlngObj.locationName, "addressName": latlngObj.addressName});
-                panTo(latlngObj);
-                marker.setMarker(latlngObj, locId);
-            } else {
-                let latlngObj = getLatLng(checkbox);
-                let index = checkedLocs.findIndex(e => e.lat === latlngObj.lat && e.lng == latlngObj.lng );
-                if (index !== -1) checkedLocs.splice(index, 1);
-                marker.deleteMarker(latlngObj, locId);
-            }
-        },
-        getCheckedLocs: function(){
-          return checkedLocs;
-        }
-    }
-})() 
-
-const marker = (function(){
-  const markers=[];
-  return {
-    setMarker: function(latlngObj, locId) {
-      const markerPosition  = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng); 
-      const marker = new daum.maps.Marker({
-      position: markerPosition
-    });
-      marker.setMap(map);
-      markers.push({marker, locId});
-  },
-  deleteMarker: function(locId) {
-    markers.forEach((element) => {
-      if (element.locId === locId ) {
-        element.marker.setMap(null);
-      }
-    })
-  }
-  }
-})()
-
-// 맵 만들기
-var mapContainer = document.getElementById('map'); 
-mapOption = { 
-    center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
-    level: 6 
-};
-
-var map = new daum.maps.Map(mapContainer, mapOption); 
-
-function panTo(latlng) {
-    var moveLatLon = new daum.maps.LatLng(latlng.lat, latlng.lng);
-    map.panTo(moveLatLon);            
-}  
-
-function getLatLng(checkbox) {
-    stringLatLng = checkbox.value;
-    console.log(stringLatLng)
-    const latlngArr = stringLatLng.split("|");
-    const latlngObj = {"lat": latlngArr[1], "lng":latlngArr[0], "locationName": latlngArr[2], "addressName": latlngArr[3]}
-    return latlngObj
-}
 </script>
 
 <%-include("../partials/footer")-%>

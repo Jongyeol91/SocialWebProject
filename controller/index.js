@@ -1,6 +1,4 @@
-const controllerObj = {};;
-
-let b= "bb"
+const controllerObj = {};
 
 controllerObj.checkCategories = function (){
     checkboxValueArr = getCheckedCategoriesFor();
@@ -19,13 +17,14 @@ controllerObj.checkCategories = function (){
     });
 };
 
+// 주소 가공하기 (서울 노원구 까지만 )
 controllerObj.makeCustomAddress = function(latlngs) {
   console.log("this is controller latlngs", latlngs)
   let customAddressArr = [];
   let splitedNativeArr = latlngs[0].addressName.split(" ");
   customAddressArr.push(splitedNativeArr[0]);
   customAddressArr.push(splitedNativeArr[1]);
-  console.log("this is controller customAddressArr", customAddressArr)
+  console.log("this is controller customAddressArr", customAddressArr);
   return customAddressArr.join(" ");
 };
 

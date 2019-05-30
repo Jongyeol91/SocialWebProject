@@ -73,174 +73,39 @@
             </div>
         </div>
     </div>
-    
-  <div class="row">
-  <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-  </div>
-
-  </div>
+</div>
 
 </div>
 
-<!-- 스크립트 태그 _ 지도 설정-->
-
-
-<script type="text/javascript" src="module.js"></script>
+<script src="/module.js"></script>
 
 <script>
-
-document.getElementById('test').addEventListener('click', getCheckedCategoriesFor);
-
 // 로컬검색
 document.getElementById('locbtn').addEventListener('click', loadText);
-function loadText() {
-  const inputvalue = document.getElementById("searchInput").value
-  console.log("client input value", inputvalue);
-  const myRequest = new Request("/getLocal");
-  
-  fetch(myRequest, { 
-    method: "POST",
-    headers: new Headers({ 'Content-Type': "application/json" }),
-    body: JSON.stringify({ txt: inputvalue })
-  })
-    .then((res) => { return res.json() })
-    .then((resultJson) => { 
-      console.log(resultJson)
-      mappedLOCS = resultJson.documents.map((document) => {
-        return {name: document.place_name, addressName: document.address_name, 
-        id:document.id, x:document.x, y:document.y}})
-
-        document.getElementById("article").innerHTML =""
-        mappedLOCS.forEach(element => {
-        document.getElementById("article").innerHTML +=
-          `
-          <input type="checkbox" id="${element.id}" class="latlng" 
-          value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
-          onchange="checkAddress(this, ${element.id});"> 
-          ${element.name}: ${element.addressName} <p>
-          `
-    });
-  });
-}// loadText function 
-
-
-
-
 // 스터디 만들기 버튼 클릭
 document.getElementById('makeStudy').addEventListener('click', makeStudy);
-var checkedLocs = [];
 
 function makeStudy() {
-  const studyName = document.getElementById('studyName').value;
-  const categories = getCheckedCategoriesFor();
-  const imgurl = document.getElementById('imgurl').value;
-  const latlngs = checkedLocs;
-  const recruNum = document.getElementById('recruNum').value;
-  const description = document.getElementById('description').value;
-  const data = { studyName, categories, latlngs, imgurl, recruNum, description, }
+    const studyName = document.getElementById('studyName').value;
+    const categories = getCheckedCategoriesFor();
+    const imgurl = document.getElementById('imgurl').value;
+    const latlngs = checkCheckbox.getCheckedLocs();
+    const recruNum = document.getElementById('recruNum').value;
+    const description = document.getElementById('description').value;
+    const data = { studyName, categories, latlngs, imgurl, recruNum, description ,};
 
-  fetch("/study", { 
-      method: "POST",
-      redirect: 'follow',
-      headers: new Headers({ 'Content-Type': "application/json" }),
-      body: JSON.stringify({ data: data })
-  }).then(window.location.href = "http://localhost:3000")
-}//make study
+    fetch("/study", {
+        method: "POST",
+        redirect: 'follow',
+        headers: new Headers({
+          'Content-Type': "application/json"
+        }),
+        body: JSON.stringify({
+            data: data
+        })
+    }).then(window.location.href = "http://localhost:3000")
+} 
 
-
-// 카테고리 체크된것 가져오기
-function getCheckedCategoriesFor() {
-  const checkboxesNodeList = document.querySelectorAll(`input[name="category"]:checked`)
-  return [].map.call(checkboxesNodeList, el => el.value); //nodeList 배열로 바꾸기
-}
-
-// 로컬 체크박스 클릭감지
-function checkAddress(checkbox, locId) {
-  if (checkbox.checked) {
-    let latlngObj = getLatLng(checkbox);
-    checkedLocs.push({"lat": latlngObj.lat, "lng": latlngObj.lng, "locationName": latlngObj.locationName, "addressName": latlngObj.addressName});
-    console.log("checkedLocs", checkedLocs);
-    panTo(latlngObj);
-    marker.setMarker(latlngObj, locId);
-  } else {
-    let latlngObj = getLatLng(checkbox);
-    let index = checkedLocs.findIndex(e => e.lat === latlngObj.lat && e.lng == latlngObj.lng );
-    if (index !== -1) checkedLocs.splice(index, 1);
-    marker.deleteMarker(locId);
-  }
-}
-
-// 맵 만들기
-var mapContainer = document.getElementById('map'); 
-mapOption = { 
-    center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
-    level: 6 
-};
-
-var map = new daum.maps.Map(mapContainer, mapOption); 
-
-
-// 마커 만들기 즉시 호출 함수 표현식, 모듈 패턴 활용
-const marker = (function(){
-    const markers=[];
-    return {
-      setMarker: function(latlngObj, locId) {
-        const markerPosition  = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng); 
-        const marker = new daum.maps.Marker({
-        position: markerPosition
-      });
-        marker.setMap(map);
-        markers.push({marker, locId})
-    },
-    deleteMarker: function(locId) {
-      markers.forEach((element) => {
-        if (element.locId === locId ) {
-          element.marker.setMap(null);
-        }
-      })
-    }
-    }
-  })();
-
-//맵 중심 한방에 이동하기
-// function setCenter(lat, lng) {            
-//     var moveLatLon = new daum.maps.LatLng(lng, lat);
-//     map.setCenter(moveLatLon);
-// }
-
-// 맵 중심 부드럽게 이동하기
-  function panTo(latlngObj) {
-    var moveLatLon = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng);
-    map.panTo(moveLatLon);            
-}       
-
-// 체크박스 좌표 구하기
-function getLatLng(checkbox) {
-    stringLatLng = checkbox.value;
-    console.log(stringLatLng)
-    const latlngArr = stringLatLng.split("|");
-    const latlngObj = {"lat": latlngArr[1], "lng": latlngArr[0], "locationName": latlngArr[2], "addressName": latlngArr[3]}
-    console.log(latlngObj)
-    return latlngObj
-}
 </script>
 
 <%-include("../partials/footer")-%>

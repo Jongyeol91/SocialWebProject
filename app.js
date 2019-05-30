@@ -25,7 +25,7 @@ const commentRoutes     = require('./routes/comments'),
 mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json()); // == express.json() 
-app.use(express.static(path.join(__dirname + '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(methodOverride("_method"));
 
 // 세션 설정

@@ -49,10 +49,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     };
 
     studyAddress = controller.makeCustomAddress(latlngs);
-    
-
     let newStudy = {studyName, categories, recruNum, img, description, author, latlngs, studyAddress};
-    
 
     Study.create(newStudy, (err, newlycreated) => {
         if (!err) {
@@ -107,7 +104,7 @@ router.post("/:id/user/new", middleware.isLoggedIn, (req, res) => {
 router.get("/:id/edit", middleware.isOwnerShip, (req, res) => {
     //find()는 배열로 반환
     Study.findById(req.params.id, (err, foundStudy) => {
-      res.render("study/editStudy.ejs", { foundStudy: foundStudy, controller: controller });
+      res.render("study/editStudy.ejs", { foundStudy: foundStudy});
     });
 });
 
