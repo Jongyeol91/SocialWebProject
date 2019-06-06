@@ -13,15 +13,16 @@
   },
   "author": "Jongyeol Park",
   "license": "ISC",
-  "engines": {
-    "node": "10.15.3"
-  },
+
   "bugs": {
     "url": "https://github.com/Jongyeol91/dbJoinPractice/issues"
   },
   "homepage": "https://github.com/Jongyeol91/dbJoinPractice#readme",
   "keywords": [],
   "description": "",
+  "engines": {
+    "node": "10.15.3"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
