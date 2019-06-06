@@ -129,7 +129,10 @@ app.use(commentRoutes);
 app.use(kakaoLocalRoutes);
 app.use(authRoutes);
 
-app.listen(3000, () => {
+app.get('/cool', (req, res) => res.send(cool()))
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
     console.log("server has started port on 3000");
 });
 

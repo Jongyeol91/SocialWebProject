@@ -1,5 +1,5 @@
 {
-  "name": "dbjoin",
+  "name": "perfactstudy",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,9 @@
   },
   "author": "Jongyeol Park",
   "license": "ISC",
+  "engines": {
+    "node": "10.15.3"
+  },
   "bugs": {
     "url": "https://github.com/Jongyeol91/dbJoinPractice/issues"
   },
@@ -22,6 +25,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
+    "cool-ascii-faces": "^1.3.4",
     "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
