@@ -167,7 +167,10 @@ function setMarker(study) {
 				overlay.setMap(null);
 		});
 		daum.maps.event.addListener(marker, 'click', function() {
-     window.location.href = `http://localhost:3000/study/${study._id}`;
+		 //window.location.href = `http://localhost:3000/study/${study._id}`;
+		 fetch(`/study/${study._id}`,{
+				method:"get"
+			})
 });
 }
 

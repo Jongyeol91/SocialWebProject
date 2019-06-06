@@ -131,8 +131,7 @@ app.use(authRoutes);
 
 app.get('/cool', (req, res) => res.send(cool()))
 
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
+app.listen( process.env.PORT || 3000, () => {
     console.log("server has started port on 3000");
 });
 

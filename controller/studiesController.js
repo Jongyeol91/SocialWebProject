@@ -19,7 +19,7 @@ studyControllerObj.getEachStudy = (req, res) => {
     });
 }
 
-//스터디 만들기 창
+//스터디 만들기 창(get)
 studyControllerObj.getMakeStudyPage = (req, res) => {
     if (req.user) {
         res.render("study/makeStudy.ejs");
@@ -29,7 +29,7 @@ studyControllerObj.getMakeStudyPage = (req, res) => {
     }
 }
 
-// 스터디 생성
+// 스터디 생성 (post)
 studyControllerObj.makeStudyPage =  (req, res) => {
     let studyName = req.body.data.studyName;
     let description = req.body.data.description;

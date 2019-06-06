@@ -7,7 +7,7 @@ router.post("/getLocal", (req, res) => {
     const searchTXT = req.body.txt;
     console.log("searchTXT", searchTXT);
     var headers = {
-        'Authorization': process.env.kakao_key
+        'Authorization': "KakaoAK 04f0c228e5b8e4fced64d52e5219ba63"
     };
     var options = {
         url: "https://dapi.kakao.com/v2/local/search/keyword.json?y=37.514322572335935&x=127.06283102249932&radius=20000&query=" + encodeURIComponent(searchTXT),

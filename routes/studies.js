@@ -13,7 +13,7 @@ router.get("/", studiesController.getMakeStudyPage);
 // 스터디 생성
 router.post("/", middleware.isLoggedIn, studiesController.makeStudyPage);
 
-// eachStudy에서 오는 ajax (개별 스터디의 좌표를 반환함)
+// eachStudy에서 오는 ajax (개별 스터디가 가지고 있는 좌표를 반환함)
 router.post("/getlatlng", studiesController.getlatlng);
 
 // index.ejs에서 오는 ajax(스터디 전체 찾아서 메인화면 마커 표시하기 위해)
