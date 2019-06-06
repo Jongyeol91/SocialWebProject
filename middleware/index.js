@@ -24,7 +24,6 @@ middlewareObj.isOwnerShip = function (req, res, next) {
 middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
         req.flash("success", req.user.username + "님 환영합니다.");
-
         return next();
     } else {
         req.flash("error", "로그인을 먼저 하십시오");

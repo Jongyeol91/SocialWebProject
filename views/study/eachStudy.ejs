@@ -31,26 +31,26 @@
                         <!--a class="pull-right btn btn-xs btn-primary" href="/study/<%= foundStudy._id %>/user/new" method="POST"> 가입하기</a> -->
                 </div>
             </div>
-            <div class="well">
-        
-                <p>댓글</p>
-                    <form action="/study/<%= foundStudy._id %>/comment/new" method="POST">
-                        <input class="w-100" type="text" name="content">
-                        <button class="btn btn-sm btn-light">입력</button>
-                        <hr>
-                    </form>
+                <form action="/study/<%= foundStudy._id %>/comment/new" method="POST">
+                        <div class="input-group mb-3 mt-3">
+                            <input type="text" class="form-control" name="content" placeholder="댓글" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">입력</button>
+                            </div>
+                        </div>
+                    <hr>
+                </form>
                 
-        
                 <div class="row">
                     <div class="col-md-12">
                         <% foundStudy.comments.forEach(function(comment) { %>
                             <strong><%= comment.author.username %></strong>
-                            <span class="pull-right"><%= moment(comment.createdDate).format("YYYY년 MM월 DD일") %></span>
                             <%= comment.content %>
+                            <span class="pull-right text-muted" style="font-size:small"><%= moment(comment.createdDate).format("YYYY년 MM월 DD일") %></span>
                             <% if(currentUser && currentUser._id.equals(comment.author._id)) { %>
-                                <a class="btn btn-xs btn-warning" href="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/edit">수정하기</a>
+                                <a class="btn btn-sm btn-warning" href="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/edit">수정하기</a>
                                 <form id="delete-form" action ="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/delete?_method=delete" method="POST">
-                                    <button class="btn btn-xs btn-danger" type="submit">삭제하기</button> 
+                                    <button class="btn btn-sm btn-danger" type="submit">삭제하기</button> 
                                 </form>
                             <% } %>
                         <hr>
@@ -58,37 +58,10 @@
                     </div>
                 </div>
             </div> 
-        </div> 
-        <div class="col"> 
         
-        </div>
-         <div class="row">
-  <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-  </div>
+        <div class="col">   </div>
     </div>
 </div>
-
-
-
-
 
 
 
@@ -100,6 +73,14 @@ mapOption = {
 };
 
 var map = new daum.maps.Map(mapContainer, mapOption); 
+
+function makeMarkerImage (){
+    let imageSrc = '/customMarker.png',     
+        imageSize = new daum.maps.Size(34, 34), 
+        imageOption = {offset: new daum.maps.Point(20, 42)}, 
+        markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
+    return markerImage
+}
 
 window.onload = function() {  
     fetch("/study/getlatlng", {
@@ -119,11 +100,14 @@ window.onload = function() {
 
 function setMarker(latlng) {
   var markerPosition  = new daum.maps.LatLng(latlng.lat, latlng.lng); 
+  let markerImage = makeMarkerImage()
   var marker = new daum.maps.Marker({
-    position: markerPosition
+    position: markerPosition,
+    image: markerImage
   });
     marker.setMap(map);
 }
+
 
 function panTo(latlng) {
     var moveLatLon = new daum.maps.LatLng(latlng.lat, latlng.lng);

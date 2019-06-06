@@ -22,14 +22,13 @@ router.post("/study/:id/comment/new", middleware.isLoggedIn, (req, res) => {
             } else {
                 foundStudy.comments.push(comment._id);
                 foundStudy.save(); 
-                console.log(comment.author, "댓글을 스터디 모델에 저장 완료")
                 res.redirect("/study/" + studyId);
             }   
         });
     });  
 });
 
-// 댓글 수정
+// 댓글 수정 페이지
 router.get("/study/:id/comments/:comment_id/edit", middleware.isCommentOwnerShip, (req, res) => {
     Comment.findById(req.params.comment_id, (err, foundComment) => {
         res.render("comment/editComment.ejs",
@@ -37,6 +36,7 @@ router.get("/study/:id/comments/:comment_id/edit", middleware.isCommentOwnerShip
     });
 });
 
+// 댓글 수정
 router.patch("/study/:id/comments/:comment_id/edit", middleware.isCommentOwnerShip, (req, res) => {
     Comment.findOneAndUpdate({ _id: req.params.comment_id },
          { content: req.body.newCommentContent }, { new: true }, (err, newComment) => {

@@ -2,13 +2,12 @@
 
 <form action="/study/<%= foundStudyId %>/comments/<%=foundComment._id%>/edit?_method=patch" method="POST">
     <div class="editbox">
-    <h1>댓글 수정</h1>
+    <h1 style="font-family: 'Noto Sans KR', sans-serif">댓글 수정</h1>
         <div class="textbox">
             <input type="text" name="newCommentContent" value="<%=foundComment.content%>">
-            <label>댓글 내용</label>
+            <button class='btn btn-info btn-sm' tpye="submit">확인</button>
         </div>
     </div>
-    <button id='btn' tpye="submit">확인</button>
 </form>
 
 <%-include("../partials/footer")-%>

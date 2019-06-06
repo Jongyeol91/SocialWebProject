@@ -1,7 +1,5 @@
-body{
-    padding-top:0px;
-    
-    margin: 58px 0px 0px 0px;
+body{    
+    margin-top: 60px; 
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -177,7 +175,25 @@ hr{
 
 
 /* 지도 */
-#map{
+#indexMap{
     position: sticky;
     top: 0;
 }
+
+/*naverLoginBTN*/
+#naverLogin {
+    background: url("/naverWhite.png") no-repeat 6px center;
+    width: 100px;
+    display: block;
+    /*cursor: pointer;*/
+}
+
+#naverLogin :hover{
+    
+    background-image: url("/naverWhite.png");
+    width: 300px;
+}
+
+.modal-backdrop {
+    z-index: 1029;
+  }

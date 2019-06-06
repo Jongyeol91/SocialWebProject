@@ -36,10 +36,6 @@
             <input type="text" class="form-control" name ="studyName[study]" id="studyName" value="<%=foundStudy.studyName%>" required>
         </div>
         <div class="form-group">
-            <label for="imgurl">이미지</label>
-            <input required type="text" class="form-control" id="imgurl" name ="img[study]">
-        </div>
-        <div class="form-group">
             <label for="recruNum">모집인원</label>
             <select required class="form-control" id="recruNum" name="recruNum[Study]" value="<%=foundStudy.recruNum%>">
                 
@@ -58,9 +54,8 @@
             <label for="description">스터디 설명</label>
             <textarea class="form-control" id="description" name ="description[study]" value="<%=foundStudy.description%>" rows="5" required></textarea>
         </div>
-        <input type="submit" class="btn btn-primary btn-block" id="makeStudy">수정하기</button>
-
-    </div>
+          <input type="submit" class="btn btn-primary btn-block" id="makeStudy" value="수정">
+        </div>
     <div class="col-md-8">
         <label for="map">스터디 희망 장소를 검색하고 등록하세요</label>
         <div id="map" style="width:100%;height:300px;"></div>
@@ -92,11 +87,11 @@ document.getElementById('makeStudy').addEventListener('click', makeStudy);
 function makeStudy() {
   const studyName = document.getElementById('studyName').value;
   const categories = getCheckedCategoriesFor();
-  const imgurl = document.getElementById('imgurl').value;
+  //const imgurl = document.getElementById('imgurl').value;
   const latlngs = checkCheckbox.getCheckedLocs();
   const recruNum = document.getElementById('recruNum').value;
   const description = document.getElementById('description').value;
-  const data = { studyName, categories, imgurl, latlngs, recruNum, description }
+  const data = { studyName, categories, latlngs, recruNum, description }
 
   fetch("/study/<%= foundStudy._id %>/edit", { 
       method: "POST",

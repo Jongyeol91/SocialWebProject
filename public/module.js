@@ -1,11 +1,19 @@
-var mapContainer = document.getElementById('map');
+let mapContainer = document.getElementById('map');
 
 mapOption = {
     center: new daum.maps.LatLng(37.6512265449085, 127.076692983486),
     level: 6
 };
 
-var map = new daum.maps.Map(mapContainer, mapOption);
+let map = new daum.maps.Map(mapContainer, mapOption);
+
+function makeMarkerImage (){
+    let imageSrc = '/customMarker.png',     
+        imageSize = new daum.maps.Size(34, 34), 
+        imageOption = {offset: new daum.maps.Point(20, 42)}, 
+        markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
+    return markerImage
+}
 
 // ajax => 로컬주소 요청 => 가공 => html에 반영
 function loadText() {
@@ -20,56 +28,77 @@ function loadText() {
             body: JSON.stringify({
                 txt: inputvalue
             })
-        })
-        .then((res) => {
-            return res.json();
-        })
-        .then((resultJson) => {
-            console.log(resultJson);
-            mappedLOCS = resultJson.documents.map((document) => {
-                return {
-                    name: document.place_name,
-                    addressName: document.address_name,
-                    id: document.id,
-                    x: document.x,
-                    y: document.y
-                };
-            });
-
-            document.getElementById("article").innerHTML = "";
-            mappedLOCS.forEach(element => {
-                document.getElementById("article").innerHTML +=
-                    `
-          <input type="checkbox" id="${element.id}" class="latlng" 
-          value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
-          onchange="checkCheckbox.checkAddress(this, ${element.id});"> 
-          ${element.name}: ${element.addressName} <p>
-          `;
-            });
+    })
+    .then((res) => {
+        return res.json();
+    })
+    .then((resultJson) => {
+        console.log(resultJson);
+        mappedLOCS = resultJson.documents.map((document) => {
+            return {
+                name: document.place_name,
+                addressName: document.address_name,
+                id: document.id,
+                x: document.x,
+                y: document.y
+            };
         });
+
+        document.getElementById("article").innerHTML = "";
+        mappedLOCS.forEach(element => {
+        document.getElementById("article").innerHTML +=`
+
+        <div class="custom-control custom-checkbox" style="width:350px">
+            <input type="checkbox" id="${element.id}" class="custom-control-input" name="searchLoc"
+            value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
+            onclick="checkCheckbox.ischecked(this, ${element.id});"/> 
+            
+            <label class="custom-control-label" for="${element.id}"> ${element.name}: ${element.addressName}</label>
+        </div>
+            `;
+        });
+    });
 } 
 
 // 로컬 체크박스 실시간 체크 - > 마커에 반영
 const checkCheckbox = (function () {
-    var checkedLocs = [];
+    let checkedLocs = [];
+    
     return {
-        checkAddress: function (checkbox, locId) {
+        ischecked: function (checkbox, locId) {
+            markerImage = makeMarkerImage();
+            let maxSelect = 1 // 장소 최대 선택 갯수
+            
             if (checkbox.checked) {
-                console.log("checkedLocs", checkedLocs);
                 let latlngObj = getLatLng(checkbox);
+                
+                document.querySelectorAll("input[name=searchLoc]:checked").length > maxSelect 
+                let checkboxies= document.querySelectorAll("input[name=searchLoc]")
+                
+                checkboxies.forEach (checkbox => {
+                    if (!checkbox.checked)
+                        checkbox.disabled = true
+                })
+
                 checkedLocs.push({
                     "lat": latlngObj.lat,
                     "lng": latlngObj.lng,
                     "locationName": latlngObj.locationName,
                     "addressName": latlngObj.addressName
                 });
+
                 panTo(latlngObj);
-                controlMarker.setMarker(latlngObj, locId);
+                controlMarker.setMarker(latlngObj, locId, markerImage);
             } else {
+                let checkboxies= document.querySelectorAll("input[name=searchLoc]")
+                checkboxies.forEach (checkbox=> {
+                    if(!checkbox.checked)
+                        checkbox.disabled=false
+                })
                 let latlngObj = getLatLng(checkbox);
+                console.log("unchecked", latlngObj)
                 let index = checkedLocs.findIndex(e => e.lat === latlngObj.lat && e.lng == latlngObj.lng);
                 if (index !== -1) checkedLocs.splice(index, 1);
-                console.log("noncheckedLocs", checkedLocs);
                 controlMarker.deleteMarker(locId);
             }
         },
@@ -83,11 +112,14 @@ const checkCheckbox = (function () {
 const controlMarker = (function () {
     const markers = [];
     return {
-        setMarker: function (latlngObj, locId) {
+        setMarker: function (latlngObj, locId, markerImage) {
+            // 마커생성
             const markerPosition = new daum.maps.LatLng(latlngObj.lat, latlngObj.lng);
             const marker = new daum.maps.Marker({
-                position: markerPosition
+                position: markerPosition,
+                image: markerImage
             });
+
             marker.setMap(map);
             markers.push({
                 marker,

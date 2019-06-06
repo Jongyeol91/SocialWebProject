@@ -1,136 +1,195 @@
 <%-include("./partials/header")-%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
 
-  
-
 	<div class="row">
-		<div class="col-md-7 ml-2">
-			<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col">no.</th>
-					<th scope="col"><i class="far fa-calendar-alt"></i> 등록일</th>
-					<th scope="col">스터디</th>
-					<th scope="col">유형</th>
-					<th scope="col"><i class="fas fa-map-marker-alt"></i> 위치</th>
-				</tr>
-			</thead>
-			<tbody>
-			<% studys.forEach((study) => { %>
-				<tr>
-					<th scope="row">1</th>
-					<td><div class="text-muted"><%= moment(study.makedDate).format("YY.MM.DD.") %></div></td>
-					<td><a class="text-decoration-none" href ="/study/<%= study._id %>"> <%=study.studyName%> </a></td>
-					<td>
-						<div class="" style="font-size:small"> 
-							<% study.categories.forEach((category) => { %>
-								<% if (category==="사기업") { %>
-									<a href="#" class="badge badge-danger">사기업</a>
-								<% } else if (category === "공기업"){ %>
-									<a href="#" class="badge badge-primary">공기업</a>
-								<% } else if (category === "인적성"){ %>
-									<a href="#" class="badge badge-info">인적성</a> 
-								<% } else if (category === "면접") { %>
-									<a href="#" class="badge badge-info">면접</a>
-								<% } else if (category === "자소서"){ %>
-									<a href="#" class="badge badge-info">자소서</a> 
-								<% } %>
-							<% }) %>
-						</div>
-					</td>
-					<td><div class="text-muted"><%=study.studyAddress%> </div></td>
-				</tr>
-			<% }) %>
-				</tbody>
-			</table>		
+		<div class="col-md-6 ml-2">
+			<table class="table table-hover" style="font-family: 'Noto Sans KR', sans-serif;">
+				<thead>
+					<tr class="text-start">
+						<th scope="col"><i class="far fa-calendar-alt"></i> </th>
+						<th scope="col"><i class="far fa-clipboard"></i></th>
+						<th scope="col"><i class="fas fa-users"></i> </th>
+						<th scope="col"><i class="fas fa-pencil-alt"></i></th>
+						<th scope="col"><i class="fas fa-map-marker-alt"></i> </th>
+					</tr>
+				</thead>
+				<tbody>
+				<% studys.forEach((study) => { %>
+					<tr>
+						<td><div class="text-muted" style="font-size:small"><%= moment(study.makedDate).format("YY.MM.DD.") %></div></td>
+						<% if (study.studyName.length < 20) { %>
+						<td><a class="text-reset text-decoration-none" style="" href ="/study/<%= study._id %>" > <%= study.studyName %> </a></td>
+						<% } else { %>
+						<td><a class="text-reset text-decoration-none" style="" href ="/study/<%= study._id %>"> <%= study.studyName.substr(0, 20) %> ... </a></td>
+						<% } %>
+						<td class="text-muted " style="font-size:small"> <%=study.recruNum%>명 </td>
+						<td>
+							<div class="" style="font-size:13px	"> 
+								<% study.categories.forEach((category) => { %>
+									<% if (category === "사기업") { %>
+										<a href="#" class="badge badge-danger">사</a>
+									<% } else if (category === "공기업") { %>
+										<a href="#" class="badge badge-primary">공</a>
+									<% } else if (category === "인적성") { %>
+										<a href="#" class="badge badge-info">필기</a> 
+									<% } else if (category === "면접") { %>
+										<a href="#" class="badge badge-info">면접</a>
+									<% } else if (category === "자소서") { %>
+										<a href="#" class="badge badge-info">서류</a> 
+									<% } %>
+								<% }) %>
+							</div>
+						</td>
+						<td><div class="text-muted "style="font-size:small"><%=study.studyAddress%> </div></td>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>		
 
 <!--pagination-->
-			<div class="row justify-content-center">
-			<nav aria-label="Page navigation">
-    <% if (pages && pages > 0) { %>
-    <ul class="pagination justify-content-center">
-        <% if (current == 1) { %>
-        <li class="page-item disabled"><a class="page-link">First</a></li> <!-- 1이면 "first" 비활성화 -->
-        <% } else { %>
-        <li><a class="page-link" href="/study">First</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
-        <% } %>
- 
-        <% if (current == 1) { %>
-        	<li class="page-item disabled"><a class="page-link">«</a></li> <!--1이면 "<<" 비활성화 -->
-        <% } else { %>
-        	<li><a class="page-link" href="/?page=<%= Number(current) - 1 %>">«</a></li> <!-- 1아니면 "<<" 활성화, 이전 페이지(current - 1) -->
-        <% } %>
- 
-        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <!-- current가 5보다 크면 i = current-4, 아니면 i = 1 -->
-        <% if (i !== 1) { %>
-        	<li class="page-item disabled"><a class="page-link">...</a></li> <!-- i가 1이 아니면 "앞"..." 비활성화 -->
-        <% } %>
-        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %><!-- 반복문 : i가 current + 4 보다 크고 pages(반올림된 페이지) 이하 까지 -->
-        	<% if (i == current) { %>																			
-        		<li class="active"><a class="page-link"><%= i %></a></li>		<!-- i가 current를 지날때, href 비생성, 클릭시점의 새로운 시작, 즉 새로운 현재 페이지 -->
-        	<% } else { %>																																
-						<li><a class="page-link" href="/?page=<%= i %>"><%= i %></a></li><!-- i가 current아닐때는 반복문의 i만큼 링크 생성 -->
-       		 <% } %>																																			<!-- ex) 8을 누르면 8 9 10 11 12 생성 -->
-        	<% if (i == Number(current) + 4 && i < pages) { %> 														<!-- 반복분 끝 도착 -->
-        		<li class="page-item disabled"><a class="page-link">...</a></li> 						<!-- "뒤..." 비활성화 -->
-        	<% } %>
-        <% } %> 																											<!-- 반복문 끝 -->
- 
-        <% if (current == pages) { %>					
-        	<li class="page-item disabled"><a class="page-link">»</a></li> <!-- 만약 current가 끝 페이지라면 ">>" 비활성화 -->
-        <% } else { %>
-        	<li><a class="page-link" href="/?page=<%= Number(current) + 1 %>">»</a></li> <!-- 뒷 페이지가 더 있다면 ">>" 활성화(href= current+1) -->
-        <% } %>
- 
-        <% if (current == pages) { %>
-       		<li class="page-item disabled"><a class="page-link">Last</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
-        <% } else { %>
-        	<li><a class="page-link" href="/?page=<%= pages %>">Last</a></li><!-- 그렇지 않다면 "last" 활성화 -->
-        <% } %>
-    </ul>
+	<div class="row justify-content-center">
+		<nav aria-label="Page navigation">
+			<% if (pages && pages > 0) { %>
+   	 		<ul class="pagination justify-content-center">
+					<% if (current == 1) { %>
+						<li class="page-item disabled"><a class="page-link">First</a></li> <!-- 1이면 "first" 비활성화 -->
+					<% } else { %>
+						<li><a class="page-link" href="/study">First</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
+					<% } %>
+	
+					<% if (current == 1) { %>
+						<li class="page-item disabled"><a class="page-link">«</a></li> <!--1이면 "<<" 비활성화 -->
+					<% } else { %>
+						<li><a class="page-link" href="/?page=<%= Number(current) - 1 %>">«</a></li> <!-- 1아니면 "<<" 활성화, 이전 페이지(current - 1) -->
+					<% } %>
+	
+					<% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <!-- current가 5보다 크면 i = current-4, 아니면 i = 1 -->
+					<% if (i !== 1) { %>
+						<li class="page-item disabled"><a class="page-link">...</a></li> <!-- i가 1이 아니면 "앞"..." 비활성화 -->
+					<% } %>
+					<% for (; i <= (Number(current) + 4) && i <= pages; i++) { %><!-- 반복문 : i가 current + 4 보다 크고 pages(반올림된 페이지) 이하 까지 -->
+						<% if (i == current) { %>																			
+							<li class="active"><a class="page-link"><%= i %></a></li>		<!-- i가 current를 지날때, href 비생성, 클릭시점의 새로운 시작, 즉 새로운 현재 페이지 -->
+						<% } else { %>																																
+							<li><a class="page-link" href="/?page=<%= i %>"><%= i %></a></li><!-- i가 current아닐때는 반복문의 i만큼 링크 생성 -->
+						<% } %>																																			<!-- ex) 8을 누르면 8 9 10 11 12 생성 -->
+						<% if (i == Number(current) + 4 && i < pages) { %> 														<!-- 반복분 끝 도착 -->
+							<li class="page-item disabled"><a class="page-link">...</a></li> 						<!-- "뒤..." 비활성화 -->
+						<% } %>
+					<% } %> 																											<!-- 반복문 끝 -->
+	
+					<% if (current == pages) { %>					
+						<li class="page-item disabled"><a class="page-link">»</a></li> <!-- 만약 current가 끝 페이지라면 ">>" 비활성화 -->
+					<% } else { %>
+						<li><a class="page-link" href="/?page=<%= Number(current) + 1 %>">»</a></li> <!-- 뒷 페이지가 더 있다면 ">>" 활성화(href= current+1) -->
+					<% } %>
+	
+					<% if (current == pages) { %>
+						<li class="page-item disabled"><a class="page-link">Last</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
+					<% } else { %>
+						<li><a class="page-link" href="/?page=<%= pages %>">Last</a></li><!-- 그렇지 않다면 "last" 활성화 -->
+					<% } %>
+    		</ul>
     <% } %>
-</nav>
-			</div>
+		</nav>
+	</div>
 
-		</div>		
+</div>		
 
 	<!--지도-->
 	<div class="col sticky-top">
-		<div id="map" style="width:100%;height:500px;"></div>
+		<div id="indexMap" style="width:100%;height:800px	;"></div>
 	</div>
 		
-</div> <!-- container-->
+</div> 
 	
 	
 
 <script>
-var mapContainer = document.getElementById('map'); 
+let mapContainer = document.getElementById('indexMap'); 
 mapOption = { 
     center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
     level: 9 
 };
-var map = new daum.maps.Map(mapContainer, mapOption); 
+let indexMap = new daum.maps.Map(mapContainer, mapOption); 
 
-window.onload = function() {  
-    fetch("/study/allGetlatlng", {
-        method:"post",
-    })
-    .then((res)=> { return res.json() })
-    .then((latlngs) => { 
-		console.log(latlngs);		  // [ [{},{},{}] ...]
-        latlngs.forEach((latlng) => {
-			setMarker(latlng)
-		})
-    })
-}
-function setMarker(latlng) {
-  var markerPosition  = new daum.maps.LatLng(latlng.lat, latlng.lng); 
-  var marker = new daum.maps.Marker({
-    position: markerPosition
+let imageSrc = '/customMarker.png',     
+    imageSize = new daum.maps.Size(32, 34), 
+    imageOption = {offset: new daum.maps.Point(20, 42)}; 
+      
+let markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+
+function setMarker(study) {
+  let markerPosition  = new daum.maps.LatLng(study.latlngs[0].lat, study.latlngs[0].lng); 
+  let marker = new daum.maps.Marker({
+		position: markerPosition,
+		image: markerImage 
   });
-    marker.setMap(map);
+		marker.setMap(indexMap);
+		 // 인포윈도우 생성
+		
+		let iwContent = 
+		`<div class="overlaybox">
+			<div class="text-center text-muted " 
+											style="font-size:small padding:5px; font-family: 'Noto Sans KR', sans-serif;">
+											${study.studyName} <br> 모집인원: ${study.recruNum}
+										</div>
+										</div>`
+
+		var content = 
+		`<div class="d-flex flex-column justify-content-center">
+			<span class="badge badge-light mb-0">${study.studyName}</span>
+			<span class="badge badge-info"> ${study.categories}</span>
+		</div>`
+
+		var contentCard = `<div class="card bg-light;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Light card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>`
+					
+
+		let overlay = new daum.maps.CustomOverlay({
+    	content: content,
+    	//map: map,
+    	position: marker.getPosition()       
+	});
+
+		daum.maps.event.addListener(marker, 'mouseover', function() {
+					//overlay.open(map, marker);
+					overlay.setMap(indexMap);
+		});
+		daum.maps.event.addListener(marker, 'mouseout', function() {
+				//infowindow.close();
+				overlay.setMap(null);
+		});
+		daum.maps.event.addListener(marker, 'click', function() {
+     window.location.href = `http://localhost:3000/study/${study._id}`;
+});
 }
 
+window.onload = function(){
+	fetch("/study/getAllStudies", {
+			method: "POST",
+			headers: new Headers({
+			'Content-Type': "application/json"
+		})
+	})
+	.then((res) => {
+		return res.json();
+	})
+	.then((studies) => {
+		console.log("스터디들", studies)
+		studies.forEach(study => {
+			setMarker(study)
+		})
+	})
+}
+
+		
 </script>
 
 <%-include("./partials/footer")-%>
