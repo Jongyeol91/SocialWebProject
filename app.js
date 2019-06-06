@@ -60,7 +60,7 @@ passport.use(new LocalStrategy(User.authenticate())); //User모델에 username�
 passport.use(new GoogleStrategy({
     clientID: process.env.google_key,
     clientSecret: process.env.google_password,
-    callbackURL: process.env.google_callbackURI
+    callbackURL: process.env.google_callbackURI_heroku
 },
 function(accessToken, refreshToken, profile, done) {  
     console.log("accessToken", accessToken)
@@ -91,7 +91,7 @@ function(accessToken, refreshToken, profile, done) {
 passport.use(new NaverStrategy({
     clientID: process.env.naver_key,
     clientSecret: process.env.naver_password,
-    callbackURL: process.env.naver_callbackURI
+    callbackURL: process.env.naver_callbackURI_heroku
 },
 function(accessToken, refreshToken, profile, done) {
     console.log(profile)
