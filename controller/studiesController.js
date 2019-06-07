@@ -32,13 +32,12 @@ studyControllerObj.getMakeStudyPage = (req, res) => {
 
 // 스터디 생성 (post)
 studyControllerObj.makeStudyPage =  (req, res) => {
-    let studyName = req.body.studyName;
-    let description = req.body.description;
-    let recruNum =req.body.recruNum;
-    let categories = req.body.categories;
-    let latlngs = req.body.latlngs;
+    let studyName = req.body.data.studyName;
+    let description = req.body.data.description;
+    let recruNum =req.body.data.recruNum;
+    let categories = req.body.data.categories;
+    let latlngs = req.body.data.latlngs;
 
-    console.log("생성: req.body:", studyName, description, categories )
     let author = {
         id: req.user._id,
         username: req.user.username
@@ -49,7 +48,6 @@ studyControllerObj.makeStudyPage =  (req, res) => {
 
     Study.create(newStudy, (err, newlycreated) => {
         if (!err) {
-            console.log("새로운 스터디 생성: ", newlycreated);
             req.flash("success", req.user.username+ "님 성공적으로 스터디를 개설했습니다. 퍼팩트 스터디가 응원합니다!");
         } else {
             console.log(err);
@@ -114,7 +112,7 @@ studyControllerObj.getEditStudyPage = (req, res) => {
 //스터디 수정(post)
 studyControllerObj.editStudy = (req, res) => {
     console.log("req.body.data: ", req.body.data);
-    
+
     let studyName   = req.body.data.studyName;
     let description = req.body.data.description;
     let recruNum    = req.body.data.recruNum;
