@@ -3,7 +3,8 @@ const mapControllerObj = {}
   
 mapControllerObj.makeCustomAddress = function(latlngs) {
     let customAddressArr = [];
-    let splitedNativeArr = latlngs[0].addressName.split(" ");
+    //let splitedNativeArr = latlngs[0].addressName.split(" ");
+    let splitedNativeArr = latlngs.addressName.split(" ");
     customAddressArr.push(splitedNativeArr[0]); //첫째 공백
     customAddressArr.push(splitedNativeArr[1]); //두번째 공백
     return customAddressArr.join(" ");

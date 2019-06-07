@@ -1,6 +1,7 @@
 <%-include("./partials/header")-%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
 
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-6 ml-2">
 			<table class="table table-hover" style="font-family: 'Noto Sans KR', sans-serif;">
@@ -103,12 +104,13 @@
 		
 </div> 
 	
+</div>
 	
 
 <script>
 let mapContainer = document.getElementById('indexMap'); 
 mapOption = { 
-    center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
+	center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
     level: 9 
 };
 let indexMap = new daum.maps.Map(mapContainer, mapOption); 
@@ -153,30 +155,30 @@ function setMarker(study) {
 					
 
 		let overlay = new daum.maps.CustomOverlay({
-    	content: content,
+			content: content,
     	//map: map,
     	position: marker.getPosition()       
 	});
 
 		daum.maps.event.addListener(marker, 'mouseover', function() {
-					//overlay.open(map, marker);
+			//overlay.open(map, marker);
 					overlay.setMap(indexMap);
 		});
 		daum.maps.event.addListener(marker, 'mouseout', function() {
-				//infowindow.close();
+			//infowindow.close();
 				overlay.setMap(null);
 		});
 		daum.maps.event.addListener(marker, 'click', function() {
-		 //window.location.href = `http://localhost:3000/study/${study._id}`;
+			//window.location.href = `http://localhost:3000/study/${study._id}`;
 		 fetch(`/study/${study._id}`,{
-				method:"get"
+			 method:"get"
 			})
 });
 }
 
 window.onload = function(){
 	fetch("/study/getAllStudies", {
-			method: "POST",
+		method: "POST",
 			headers: new Headers({
 			'Content-Type': "application/json"
 		})

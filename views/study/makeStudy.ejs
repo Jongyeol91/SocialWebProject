@@ -4,6 +4,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 font-weight-bold mt-4">
+      
         <label class="d-block" >스터디 종류</label>
         <div class="form-group font-weight-light">
           <div class="custom-control custom-checkbox d-inline " id="checkbox">
@@ -84,6 +85,7 @@
           </div>
         </div>
         <button class="btn btn-primary btn-block" id="makeStudy" type="submit">스터디 만들기</button>
+      
     </div>
 </div><!--container-->
 
@@ -106,16 +108,15 @@ function makeStudy() {
 
     fetch("/study", {
         method: "POST",
-        redirect: 'follow',
         headers: new Headers({
           'Content-Type': "application/json"
         }),
         body: JSON.stringify({
             data: data
         })
-    })
+    }).then(window.location("https://powerful-dusk-89271.herokuapp.com"))
 } 
 
-</script>
+ </script>
 
 <%-include("../partials/footer")-%>
