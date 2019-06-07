@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     message: [{
         messageAuthor: String,
         message: String,
-          createdDate: { type: Date, default: Date.now }
+        createdDate: { type: Date, default: Date.now }
     }],
     createdDate: { type: Date, default: Date.now }
 });
