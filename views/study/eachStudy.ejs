@@ -1,11 +1,10 @@
 <%-include("../partials/header")-%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a98a8e84860d087b0befdbe0ef46f489"></script>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-    <div class="col">
-    </div>
-        <div class="col-md-5">
+    
+        <div class="col-md-12 col-sm-12">
             <div class="card mt-3" >
                 <!--<img calss="img-responsive" src="<%= foundStudy.img %>" > %>--> 
                 <div id="map" style="width:auto; height:280px;"></div>
@@ -42,7 +41,7 @@
                 </form>
                 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
                         <% foundStudy.comments.forEach(function(comment) { %>
                             <strong><%= comment.author.username %></strong>
                             <%= comment.content %>
@@ -59,7 +58,7 @@
                 </div>
             </div> 
         
-        <div class="col">   </div>
+        
     </div>
 </div>
 
@@ -93,7 +92,6 @@ window.onload = function() {
         latlngs.forEach((latlng) => {
             setMarker(latlng);
             panTo(latlng)
-            console.log(latlng);
         })
     })
 }

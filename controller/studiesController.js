@@ -8,6 +8,7 @@ const studyControllerObj = {}
 
 // 개별 스터디 보기
 studyControllerObj.getEachStudy = (req, res) => {
+    console.log("에이젝스에서 옴")
     //Study.findById(req.params.id).populate("user").populate("comments").exec(function(err, foundStudy){
     Study.findById(req.params.id).populate({ path: 'comments', model: Comment, populate: { path: 'author',  model: User }
     }).populate("joinUsers").exec((err, foundStudy) => {
@@ -15,10 +16,11 @@ studyControllerObj.getEachStudy = (req, res) => {
             req.flash("error", "스터디를 찾을수 없습니다.");
             res.redirect("/");
         }
+            console.log(1)
             res.render("study/eachStudy.ejs", { foundStudy: foundStudy, moment: moment });
+            console.log(2)
     });
 }
-
 
 //스터디 만들기 창(get)
 studyControllerObj.getMakeStudyPage = (req, res) => {

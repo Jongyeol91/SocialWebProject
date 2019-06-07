@@ -9,12 +9,13 @@
   <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700|Noto+Sans+KR&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/bootstrap-social.css">
   
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top " style="background-color: rgba(30, 180, 150);">
+<nav class="navbar navbar-custom navbar-expand-md navbar-dark fixed-top " style="background-color: rgba(30, 180, 150);">
   
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
+    <a class="d-flex navbar-brand font-weight-light " href="/">우리동네 스터디는?</a>
+     <a class="d-flex navbar-brand mx auto font-weight-bold" href="/">퍼펙트 스터디</a>
   <div class="collapse navbar-collapse mr-auto" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
     
@@ -86,8 +87,7 @@
 
     <ul class="navbar-nav mr-auto">
 
-     <a class="d-flex navbar-brand font-weight-light " href="#">취업전문 스터디는?</a>
-     <a class="d-flex navbar-brand mx auto font-weight-bold" href="/">퍼펙트 스터디</a>
+     
     </ul>
 
     <form class="form-inline my-2 my-lg-0">
@@ -101,7 +101,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">로그인</h5>
+        <h5 class="modal-title font-weight-bold" id="exampleModalLabel">로그인</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -119,14 +119,14 @@
 </div>
       
       <% if(!currentUser){ %>
-      <li class="nav-item"><a class="nav-link"  href="#" data-toggle="modal" data-target="#exampleModal">로그인</a></li>
+      <li class="nav-item  font-weight-bold"><a class="nav-link"  href="#" data-toggle="modal" data-target="#exampleModal">로그인</a></li>
        <!--  <li class="nav-item"><a class="nav-link" href="/auth/google"> <i class="fab fa-google"></i> </a></li> -->
         <!--<li class="nav-item"><a class="nav-link" href="/register"> 회원가입 </a> </li> -->
       <% } else { %>
         <li class="nav-item"><a class="nav-link " href="#"> <%=currentUser.username%> 님 접속중 </a></li>
         <li class="nav-item"><a class="nav-link" href="/logout"> logout </a></li>
       <% } %>
-      <li class="nav-item active"><a class="btn btn-primary" href ="/study"> 스터디 만들기 </a></li>
+      <li class="nav-item active"><a class="btn btn-warning" href ="/study"> 스터디 만들기 </a></li>
       </ul>
        
     </form>

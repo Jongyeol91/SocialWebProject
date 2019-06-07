@@ -1,3 +1,19 @@
+
+.navbar-custom .navbar-text {
+    color: rgba(2,3,4,.8);
+}
+
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(219, 226, 231, 0.774);
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:focus .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color:  rgba(250, 249, 177, 0.863);;
+}
+
 body{    
     margin-top: 60px; 
     font-family: 'Open Sans', sans-serif;

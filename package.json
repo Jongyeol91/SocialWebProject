@@ -40,5 +40,8 @@
     "passport-naver": "^1.0.6",
     "path": "^0.12.7",
     "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }

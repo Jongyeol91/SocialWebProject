@@ -8,7 +8,13 @@ const userSchema = new mongoose.Schema({
     ownStudy: String,
     joinStudy: String,
     provider: String,
-    point: { type: Number, default: 0, max: 50 }
+    point: { type: Number, default: 0, max: 50 },
+    message: [{
+        messageAuthor: String,
+        message: String,
+          createdDate: { type: Date, default: Date.now }
+    }],
+    createdDate: { type: Date, default: Date.now }
 });
 
 userSchema.plugin(passportLocalMongoose);
