@@ -1,0 +1,28 @@
+<%-include("../partials/header")-%>
+<div class="container" style="padding-top:60px">
+  <div class= "row justify-content-center">
+    <div class= "col-lg-5 col-sm-8">
+      <strong><label for="inputEmail4">닉네임</label></strong>
+      <div class="form-row">
+        <input type="email" class="form-control col-lg-6" id="inputEmail4" value="<%= foundUser.username %>">
+          <button type="submit" class="btn btn-primary col-lg-6 col-sm-8 mb-3">수정(준비중)</button>
+      </div>
+
+      <strong>내가 만든 스터디</strong>
+      <ul class="list-group list-group-flush mb-3">
+        <% foundUser.ownStudy.forEach((study) => { %>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action"><%= study.studyName %></a>
+          </div>
+        <% }) %>
+      </ul>
+
+      <strong>가입일</strong>
+      <ul class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-action"><%= moment(foundUser.createdDate).format("YYYY년 MM월 DD일") %></a>
+      </ul>
+      
+    </div>
+  </div>
+</div>
+<%-include("../partials/footer")-%>

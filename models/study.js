@@ -27,8 +27,8 @@ const studySchema = new mongoose.Schema({
 //         }
 //     });
 // });
-
-module.exports = mongoose.model("Study", studySchema);
+const Study = new mongoose.model("Study", studySchema)
+module.exports = Study 
 
 // Study.find()
 //   .populate([

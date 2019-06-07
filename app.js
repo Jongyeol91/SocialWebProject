@@ -48,7 +48,6 @@ app.use(passport.session());
 
 passport.serializeUser(function (user, done) {
     done(null, user._id);
-    console.log(user._id);
 });
 
 passport.deserializeUser(function (id, done) {
@@ -56,7 +55,19 @@ passport.deserializeUser(function (id, done) {
         done(err, user);
     });
 });
-passport.use(new LocalStrategy(User.authenticate())); //User모델에 username과 password있으면 _id를 자동으로 세션등록
+
+//User모델에 username과 password있으면 _id를 자동으로 세션등록
+passport.use(new LocalStrategy(User.authenticate()));
+
+// passport.use(new LocalStrategy(function(username, password, done) {
+//     User.findOne({ username: username }, function (err, user) {
+//       if (err) { return done(err) }
+//       if (!user) { return done(null, false, {message: '아이디가 없습니다.'}) }
+//       if (user.password!= password) { return done(null, false, {message: '비빌번호가 틀렸습니다.'})}
+//       return done(null, user, {message: '로그인에 성공하였습니다.'});
+//     });
+//   }
+// ));
 passport.use(new GoogleStrategy({
     clientID: process.env.google_key,
     clientSecret: process.env.google_password,
@@ -64,24 +75,17 @@ passport.use(new GoogleStrategy({
 },
 function(accessToken, refreshToken, profile, done) {  
     User.findOne({'oauthId': profile.id }, (err, user) => {
-        if (err) {
-            return done(err);
-        }
+        if (err) { return done(err) }
         if (!user) {
-            user = new User({
+             user = new User({
                 username: profile.displayName,
                 oauthId: profile.id,
                 provider: "google",
             });
-            user.save((err) => {
-                if (err) {
-                    console.log('save err', err);
-                }
+            user.save((err) => {if (err) { console.log('save err', err) }
                 return done(err, user);
             });
-        } else {
-            return done(err, user);
-        }
+        } else { return done(err, user, {message: '구글 로그인에 성공하였습니다.'}) }
     });
     }
 ));
@@ -107,7 +111,7 @@ function(accessToken, refreshToken, profile, done) {
             });
         } else {
             
-            return done(err, user);
+            return done(err, user, {message: "네이버로 로그인 성공"});
         }
     });
 }
@@ -133,7 +137,7 @@ const port = process.env.PORT || 5000;
 const host = '0.0.0.0';
 
 app.listen( port, host, () => {
-    console.log("server has started port on 3000");
+    console.log("server has started port on 5000");
 });
 
 

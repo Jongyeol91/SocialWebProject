@@ -14,7 +14,6 @@ router.get('/auth/google',
 router.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    req.flash("sucess", "성공적으로 로그인 되었습니다.");
     res.redirect('/');
   });
 
@@ -29,7 +28,6 @@ router.get('/auth/naver/callback',
 passport.authenticate('naver', {
     failureRedirect: '/login'
 }), function(req, res) {
-    req.flash("sucess", "성공적으로 로그인 되었습니다.");
     res.redirect('/'); 
 });
 

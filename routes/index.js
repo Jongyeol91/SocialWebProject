@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require("passport")
 const indexController = require('../controller'); // index.js의 파일명은 따로 임포트 해줄 필요가 없음
 
 //전체출력
@@ -13,15 +14,22 @@ router.get("/register", (req, res) => {
     res.render("auth/register.ejs");
 });
 
-// 회원가입
+// 로컬 회원가입
 router.post("/register", indexController.userRegister);
 
-//로그인 창
+//로컬 로그인 창
 router.get("/login", (req, res) => {
     res.render("auth/login.ejs");
 });
 
-router.post("/login",indexController.userLogin );
+// 로컬 로그인 기능
+//router.post("/login", indexController.userLogin );
+
+router.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 router.get("/logout", (req, res) => {
     delete req.session.returnTo;
@@ -29,5 +37,8 @@ router.get("/logout", (req, res) => {
     req.logOut();
     res.redirect("/");
 });
+
+//user info 찾아서 myinfo페이지에 전하는 라우터
+router.get("/user/:id", indexController.getUserInfo)
 
 module.exports = router;

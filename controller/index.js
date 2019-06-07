@@ -71,13 +71,17 @@ indexControllerObj.userRegister = (req, res) => {
       passport.authenticate("local")(req, res, () => {
           res.redirect("/");
       });
-      // user.save();
+       user.save();
   });
 }
 
 // 로컬 로그인
 indexControllerObj.userLogin = passport.authenticate("local", {
-  failureRedirect: "/login"
+ 
+  failureRedirect: "/login",
+  //failureFlash:true,
+  //successFlash:true
+
 }), (req, res) => {
   if(req.session.returnTo){
       res.redirect(req.session.returnTo);
@@ -85,6 +89,14 @@ indexControllerObj.userLogin = passport.authenticate("local", {
   } else {
       res.redirect("/");
   }
+}
+
+//user info 찾아서 myinfo페이지에 전하는 메서드
+indexControllerObj.getUserInfo = (req, res) => {
+    //유저한명을 찾고 개설한 스터디와 합친후 결과 반환
+    User.findById(req.params.id).populate({path:"ownStudy", model: "Study"}).exec((err, foundUser) => {
+        res.render("myInfo/myInfo.ejs", { foundUser, moment })
+    })
 }
 
   

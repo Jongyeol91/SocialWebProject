@@ -47,14 +47,17 @@ studyControllerObj.makeStudyPage =  (req, res) => {
 
     studyAddress = mapController.makeCustomAddress(latlngs);
     let newStudy = {studyName, categories, recruNum, description, author, latlngs, studyAddress};
-    Study.create(newStudy, (err, newlycreated) => {
-        if (!err) {
-            req.flash("success", req.user.username+ "님 성공적으로 스터디를 개설했습니다. 퍼팩트 스터디가 응원합니다!");
-        } else {
-            console.log(err);
-        }
-        res.redirect("/");
-    });
+    
+    Study.create(newStudy)
+    .then((newlycreated) => {
+        return User.findOneAndUpdate({_id: req.user._id}, { $push:{ownStudy: newlycreated._id}}, {new: true})
+    })
+    .then((updatedUser) => {
+        console.log(updatedUser)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
 }
 
 // eachStudy에서 오는 ajax  (개별 스터디의 좌표를 반환함)
