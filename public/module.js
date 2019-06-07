@@ -33,7 +33,7 @@ function loadText() {
         return res.json();
     })
     .then((resultJson) => {
-        console.log(resultJson);
+        //console.log(resultJson);
         mappedLOCS = resultJson.documents.map((document) => {
             return {
                 name: document.place_name,
@@ -96,7 +96,7 @@ const checkCheckbox = (function () {
                         checkbox.disabled=false
                 })
                 let latlngObj = getLatLng(checkbox);
-                console.log("unchecked", latlngObj)
+                //console.log("unchecked", latlngObj)
                 let index = checkedLocs.findIndex(e => e.lat === latlngObj.lat && e.lng == latlngObj.lng);
                 if (index !== -1) checkedLocs.splice(index, 1);
                 controlMarker.deleteMarker(locId);
@@ -139,7 +139,7 @@ const controlMarker = (function () {
 // 체크박스 주소 구하기
 function getLatLng(checkbox) {
     stringLatLng = checkbox.value;
-    console.log(stringLatLng);
+    //console.log(stringLatLng);
     const latlngArr = stringLatLng.split("|");
     const latlngObj = {
         "lat": latlngArr[1],
@@ -147,7 +147,7 @@ function getLatLng(checkbox) {
         "locationName": latlngArr[2],
         "addressName": latlngArr[3]
     }
-    console.log(latlngObj);
+    //console.log(latlngObj);
     return latlngObj;
 }
 

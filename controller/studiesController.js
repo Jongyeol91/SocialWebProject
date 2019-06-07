@@ -45,7 +45,6 @@ studyControllerObj.makeStudyPage =  (req, res) => {
 
     studyAddress = mapController.makeCustomAddress(latlngs);
     let newStudy = {studyName, categories, recruNum, description, author, latlngs, studyAddress};
-
     Study.create(newStudy, (err, newlycreated) => {
         if (!err) {
             req.flash("success", req.user.username+ "님 성공적으로 스터디를 개설했습니다. 퍼팩트 스터디가 응원합니다!");
@@ -111,7 +110,6 @@ studyControllerObj.getEditStudyPage = (req, res) => {
 
 //스터디 수정(post)
 studyControllerObj.editStudy = (req, res) => {
-    console.log("req.body.data: ", req.body.data);
 
     let studyName   = req.body.data.studyName;
     let description = req.body.data.description;
@@ -126,7 +124,7 @@ studyControllerObj.editStudy = (req, res) => {
         if(err || !updatedStudy){
             console.log(err);
         } else {
-            console.log(updatedStudy);
+            //console.log(updatedStudy);
         }
         res.redirect("/study/" + req.params.id);
     });
