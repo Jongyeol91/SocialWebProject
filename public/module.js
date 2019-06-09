@@ -2,7 +2,7 @@ let mapContainer = document.getElementById('map');
 
 mapOption = {
     center: new daum.maps.LatLng(37.6512265449085, 127.076692983486),
-    level: 6
+    level: 3
 };
 
 let map = new daum.maps.Map(mapContainer, mapOption);
