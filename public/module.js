@@ -73,6 +73,7 @@ const checkCheckbox = (function () {
                 let latlngObj = getLatLng(checkbox);
                 
                 document.querySelectorAll("input[name=searchLoc]:checked").length > maxSelect 
+                
                 let checkboxies= document.querySelectorAll("input[name=searchLoc]")
                 
                 checkboxies.forEach (checkbox => {

@@ -31,14 +31,14 @@
      
         <div class="form-group mt-2">
             <label for="studyName">스터디 이름</label>
-            <input type="text" class="form-control" name ="studyName" id="studyName" maxlength="30" placeholder="인적성 모의고사 주3회 2시간">
+            <input type="text" class="form-control" name ="studyName" id="studyName" maxlength="30" required>
         </div>
        
         <!--이미지 제거-->
 
         <div class="form-group">
             <label for="recruNum">모집인원</label>
-            <select class="form-control" id="recruNum">
+            <select class="form-control" id="recruNum" required>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -51,7 +51,7 @@
         </div>
         <div class="form-group">
             <label for="description">스터디 설명</label>
-            <textarea class="form-control" id="description" name ="description" rows="8"></textarea>
+            <textarea class="form-control" id="description" name ="description" rows="8" required></textarea>
         </div>
         
     </div>
@@ -62,7 +62,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-8 mt-2">
-                    <input class="form-control" type="text" id="searchInput">
+                    <input class="form-control" type="text" id="searchInput" required>
                 </div>
                 <div class="col-md-4 mt-2">
                     <input class="btn btn-primary btn-block" type="button" value="검색/등록" id="locbtn" >
