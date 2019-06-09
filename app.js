@@ -10,13 +10,14 @@ const express       = require('express'),
       moment        = require('moment'),
       fs            = require("fs"),
       path          = require("path"),
-      methodOverride = require('method-override'),
-      flash         = require('connect-flash'),
-      User          = require('./models/user'),
-      Study         = require('./models/study'),
-      Comment       = require('./models/comment'),
       GoogleStrategy = require('passport-google-oauth20').Strategy,
-      NaverStrategy = require('passport-naver').Strategy;
+      NaverStrategy  = require('passport-naver').Strategy,
+      methodOverride = require('method-override'),
+      flash          = require('connect-flash'),
+      helmet         = require('helmet'),
+      User           = require('./models/user'),
+      Study          = require('./models/study'),
+      Comment        = require('./models/comment');
 
       
 // require routes
@@ -24,7 +25,7 @@ const commentRoutes     = require('./routes/comments'),
       studyRoutes       = require('./routes/studies'),
       indexRoutes       = require('./routes/index'),
       kakaoLocalRoutes  = require('./routes/kakaoLocal'),
-      authRoutes  = require('./routes/auth');
+      authRoutes        = require('./routes/auth');
       
 //mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB`, {useNewUrlParser: true});
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json()); // == express.json() 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(methodOverride("_method"));
+app.use(helmet());
 
 // 세션 설정
 app.use(require("express-session")({
