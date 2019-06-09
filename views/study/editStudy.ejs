@@ -6,9 +6,9 @@
   <div class="row">
     <div class="col-md-4 font-weight-bold">
     
-        <label class="d-block" >스터디 종류</label>
+        <label class="d-inline" >스터디 종류</label><div class="d-inline" id="categoriesWarning"></div>
         <div class="form-group font-weight-light">  
-          <div class="custom-control custom-checkbox d-inline " id="checkbox">
+          <div class="custom-control custom-checkbox d-inline " id="checkbox">  
   
             <input type="checkbox" name="category" class="custom-control-input" id="customCheck1" value="사기업">
             <label class="custom-control-label" for="customCheck1">사기업</label>
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="form-group">
-            <label for="studyName">스터디 이름</label>
+            <label for="studyName">스터디 이름</label> <div class="d-inline" id="studyNameWarning"></div>
             <input type="text" class="form-control" name ="studyName[study]" id="studyName" value="<%=foundStudy.studyName%>" required>
         </div>
         <div class="form-group">
@@ -51,38 +51,79 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="description">스터디 설명</label>
-            <textarea class="form-control" id="description" name ="description[study]" value="<%=foundStudy.description%>" rows="5" required></textarea>
+            <label class="d-inline" for="description">스터디 설명</label> <div class="d-inline" id="descriptionWarning"></div>
+            <textarea class="form-control d-inline" id="description" name ="description[study]" value="<%=foundStudy.description%>" rows="5" required></textarea>
+            
         </div>
-          <input type="submit" class="btn btn-primary btn-block" id="makeStudy" value="수정">
         </div>
-    <div class="col-md-8">
-        <label for="map">스터디 희망 장소를 검색하고 등록하세요</label>
-        <div id="map" style="width:100%;height:300px;"></div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-8 mt-2">
-                    <input class="form-control" type="text" id="searchInput">
-                </div>
-                
-                <div class="col-md-4 mt-2">
-                    <input class="btn btn-primary btn-block" type="button" value="검색/등록" id="locbtn">
-                </div>
-                <div>
-                    <div id="article"></div>
-                </div>
+    <div class="col-md-8 mt-4">
+      
+      <label for="map">스터디 희망 장소를 검색하고 등록하세요</label>
+      <div id="map" style="width:100%;height:300px;"></div>
+      <div class="form-group">
+          <div class="row">
+            <div class="col-md-8 mt-2">
+              <input class="form-control" type="text" id="searchInput">
+            </div>
+              
+              <div class="col-md-4 mt-2">
+                <input class="btn btn-primary btn-block" type="button" value="검색/등록" id="locbtn">
+              </div>
+
+          </div>
+      </div>
+
+    </div><!--col-md-8-->
+  </div><!--row-->
+
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <div class="card bg-light mb-3" style="max-width: 100%;">
+        <div id="locWarning" class="card-header">검색결과</div>  
+        <div  class="card-body" >
+          <h5 class="card-title"></h5>
+            <div id="article" class="row card-text justify-content-around align-items-start" style="" >
+              검색결과가 여기로 들어와요
             </div>
         </div>
+      </div>
     </div>
+    <button class="btn btn-primary btn-block" id="makeStudy" type="submit">스터디 만들기</button>
   </div>
-</div>
+
+</div><!--container-->
 
 <script type="text/javascript" src="/module.js"></script>
 
 <script>
 document.getElementById('locbtn').addEventListener('click', loadText);
-document.getElementById('makeStudy').addEventListener('click', makeStudy);
 
+document.getElementById('makeStudy').addEventListener('click', function(){
+  
+  var isStudyName = document.getElementById("studyName").checkValidity();
+  var isDescription = document.getElementById("description").checkValidity();
+  
+  var checkboxes = document.querySelectorAll('input[name="category"]');
+  var atLeastOneCategories = Array.prototype.slice.call(checkboxes).some(categories => categories.checked);
+  
+  var searchLoc = document.querySelectorAll('input[name="searchLoc"]');
+  var atLeastOneSearchedLoc = Array.prototype.slice.call(searchLoc).some(loc => loc.checked);
+  
+  checkInput(atLeastOneCategories, "categoriesWarning");
+  checkInput(atLeastOneSearchedLoc, "locWarning");
+  checkInput(isStudyName, "studyNameWarning");
+  checkInput(isDescription, "descriptionWarning");
+  
+  if(atLeastOneCategories && atLeastOneSearchedLoc && isStudyName && isDescription){
+    makeStudy()
+  }
+});
+
+function checkInput(element, target){
+  if(!element) {
+    document.getElementById(target).innerHTML = `<span style="color:red">체크하세요</sapn>`
+  } 
+}
 // 스터디 수정하기 버튼 클릭
 function makeStudy() {
   const studyName = document.getElementById('studyName').value;

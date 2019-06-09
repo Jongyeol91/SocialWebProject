@@ -4,8 +4,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 font-weight-bold mt-4">
-      <form>
-        <label class="d-inline" >스터디 종류</label> <div class="d-inline" id="categoriesNotCheckedWarning"></div>
+      
+        <label class="d-inline" >스터디 종류</label> <div class="d-inline" id="categoriesWarning"></div>
         <div class="form-group font-weight-light">
           <div class="custom-control custom-checkbox d-inline " id="checkbox">
             <input type="checkbox" name="category" class="custom-control-input" id="customCheck1" value="사기업">
@@ -30,7 +30,7 @@
         </div>
      
         <div class="form-group mt-2">
-            <label for="studyName">스터디 이름</label>
+            <label class="d-inline" for="studyName">스터디 이름</label>  <div class="d-inline" id="studyNameWarning"></div>
             <input type="text" class="form-control" name ="studyName" id="studyName" maxlength="30" required>
         </div>
        
@@ -51,7 +51,8 @@
         </div>
         <div class="form-group">
             <label for="description">스터디 설명</label>
-            <textarea class="form-control" id="description" name ="description" rows="8" required></textarea>
+            <textarea class="form-control d-inline" id="description" name ="description" rows="8" required></textarea>
+            <div class="d-inline" id="descriptionWarning"></div>
         </div>
         
     </div>
@@ -75,7 +76,7 @@
     <div class="row">
         <div class="col-md-12 mt-3">
           <div class="card bg-light mb-3" style="max-width: 100%;">
-            <div id="locNotCheckedwarning" class="card-header">검색결과</div>  
+            <div id="locWarning" class="card-header">검색결과</div>  
             <div  class="card-body" >
               <h5 class="card-title"></h5>
                 <div id="article" class="row card-text justify-content-around align-items-start" style="" >
@@ -85,7 +86,7 @@
           </div>
         </div>
         <button class="btn btn-primary btn-block" id="makeStudy" type="submit">스터디 만들기</button>
-      </form>
+      
       
     </div>
 </div><!--container-->
@@ -96,8 +97,7 @@
 // 로컬검색
 document.getElementById('locbtn').addEventListener('click', loadText);
 // 스터디 만들기 버튼 클릭
-document.getElementById('makeStudy').addEventListener('click', function(e){
-  e.preventDefault();
+document.getElementById('makeStudy').addEventListener('click', function(){
   
   var isStudyName = document.getElementById("studyName").checkValidity();
   var isDescription = document.getElementById("description").checkValidity();
@@ -108,20 +108,21 @@ document.getElementById('makeStudy').addEventListener('click', function(e){
   var searchLoc = document.querySelectorAll('input[name="searchLoc"]');
   var atLeastOneSearchedLoc = Array.prototype.slice.call(searchLoc).some(loc => loc.checked);
   
-
-  if(!atLeastOneSearchedLoc) {
-    document.getElementById("locNotCheckedwarning").innerHTML = `<span style="color:red">체크하세요</sapn>`
-  } 
-
-  if(!atLeastOneCategories){
-     document.getElementById("categoriesNotCheckedWarning").innerHTML = `<span style="color:red"> 한개 이상 체크하세요</sapn>`
-  }
-
-  if(isStudyName && isDescription &&atLeastOneCategories && atLeastOneSearchedLoc){
-    makeStudy();
-  } 
+  checkInput(atLeastOneCategories, "categoriesWarning");
+  checkInput(atLeastOneSearchedLoc, "locWarning");
+  checkInput(isStudyName, "studyNameWarning");
+  checkInput(isDescription, "descriptionWarning");
   
+  if(atLeastOneCategories && atLeastOneSearchedLoc && isStudyName && isDescription){
+    makeStudy();
+  }
 });
+
+function checkInput(element, target){
+  if(!element) {
+    document.getElementById(target).innerHTML = `<span style="color:red">체크하세요</sapn>`
+  } 
+}
 
 function makeStudy() {
     const studyName = document.getElementById('studyName').value;
