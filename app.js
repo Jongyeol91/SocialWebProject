@@ -135,10 +135,10 @@ app.use(authRoutes);
 
 app.get('/cool', (req, res) => res.send(cool()))
 
-const port = process.env.PORT || 5000;
+
 const host = '0.0.0.0';
 
-app.listen( port, host, () => {
+app.listen( 80, host, () => {
     console.log("server has started port on 5000");
 });
 
