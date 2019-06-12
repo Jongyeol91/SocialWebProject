@@ -2,7 +2,7 @@ let mapContainer = document.getElementById('map');
 
 mapOption = {
     center: new daum.maps.LatLng(37.6512265449085, 127.076692983486),
-    level: 3
+    level: 4
 };
 
 let map = new daum.maps.Map(mapContainer, mapOption);
@@ -16,7 +16,9 @@ function makeMarkerImage (){
 }
 
 // ajax => 로컬주소 요청 => 가공 => html에 반영
-function loadText() {
+function loadText(e) {
+    e.preventDefault();
+    console.log("찍히나")
     const inputvalue = document.getElementById("searchInput").value;
     const myRequest = new Request("/getLocal");
 
@@ -53,11 +55,12 @@ function loadText() {
             value="${element.x + "|" + element.y + "|" + element.name + "|" + element.addressName}"
             onclick="checkCheckbox.ischecked(this, ${element.id});"/> 
             
-            <label class="custom-control-label" for="${element.id}"> ${element.name}: ${element.addressName}</label>
+            <label class="custom-control-label" for="${element.id}"> ${element.name} </label>
         </div>
             `;
         });
     });
+    return false;
 } 
 
 // 로컬 체크박스 실시간 체크 - > 마커에 반영

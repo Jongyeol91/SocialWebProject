@@ -21,6 +21,17 @@
       <ul class="list-group list-group-flush">
         <a href="#" class="list-group-item list-group-item-action"><%= moment(foundUser.createdDate).format("YYYY년 MM월 DD일") %></a>
       </ul>
+
+      <strong>받은 쪽지</strong>
+      <ul class="list-group list-group-flush mb-3">
+        <% foundUser.messages.forEach((message) => { %>
+          <div class="list-group">
+             <p class="list-group-item list-group-item-action"><%= message.messageAuthor %></p>
+             <p class="list-group-item list-group-item-action"><%= message.content %></p>
+             <p class="list-group-item list-group-item-action"><%= message.createdDate %></p>
+          </div>
+        <% }) %>
+      </ul>
       
     </div>
   </div>

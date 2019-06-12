@@ -1,0 +1,22 @@
+<%-include("../partials/header")-%>
+<div class="container" style="padding-top:60px">
+  <div class= "row justify-content-center">
+    <div class= "col-lg-5 col-sm-8">
+      <h2 class="text-center">쪽지보내기</h2>
+      <h4 class="text-muted"><small><label for="targetUser">받는이</label></small></h4>
+      <div class="form-row">
+        <p class="form-control" id="targetUser"> <%= targetUser.username %> </p>
+        <!-- <button type="submit" class="btn btn-primary col-lg-6 col-sm-8 mb-3">수정(준비중)</button> -->
+      </div>
+        <form action="/message/senduser/<%=currentUser._id%>/targetuser/<%=targetUser._id%>/new" method="POST">
+            <div class="form-group">
+                <h4 class="text-muted"><small><label for="description">보낼 메세지</label></small></h4>
+                <textarea class="form-control d-inline" id="description" name ="description" rows="8" required></textarea>
+                <div class="d-inline" id="descriptionWarning"></div>
+            </div>
+            <button class="btn btn-info btn-block" type="submit">보내기</button>
+        </form>
+    </div>
+  </div>
+</div>
+<%-include("../partials/footer")-%>

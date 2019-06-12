@@ -9,8 +9,10 @@ const studyControllerObj = {}
 // 개별 스터디 보기
 studyControllerObj.getEachStudy = (req, res) => {
     //Study.findById(req.params.id).populate("user").populate("comments").exec(function(err, foundStudy){
-    Study.findById(req.params.id).populate({ path: 'comments', model: Comment, populate: { path: 'author',  model: User }
-    }).populate("joinUsers").exec((err, foundStudy) => {
+    Study.findById(req.params.id).populate({ 
+        path: 'comments', model: Comment, populate: {
+             path: 'author', model: User 
+            }}).populate("joinUsers").exec((err, foundStudy) => {
         if (err || !foundStudy) {
             req.flash("error", "스터디를 찾을수 없습니다.");
             res.redirect("/");

@@ -53,9 +53,9 @@
 			<% if (pages && pages > 0) { %>
    	 		<ul class="pagination justify-content-center">
 					<% if (current == 1) { %>
-						<li class="page-item disabled"><a class="page-link">First</a></li> <!-- 1이면 "first" 비활성화 -->
+						<li class="page-item disabled"><a class="page-link">처음</a></li> <!-- 1이면 "first" 비활성화 -->
 					<% } else { %>
-						<li><a class="page-link" href="/study">First</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
+						<li><a class="page-link" href="/study">처음</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
 					<% } %>
 	
 					<% if (current == 1) { %>
@@ -86,9 +86,9 @@
 					<% } %>
 	
 					<% if (current == pages) { %>
-						<li class="page-item disabled"><a class="page-link">Last</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
+						<li class="page-item disabled"><a class="page-link">끝</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
 					<% } else { %>
-						<li><a class="page-link" href="/?page=<%= pages %>">Last</a></li><!-- 그렇지 않다면 "last" 활성화 -->
+						<li><a class="page-link" href="/?page=<%= pages %>">끝</a></li><!-- 그렇지 않다면 "last" 활성화 -->
 					<% } %>
     		</ul>
     <% } %>

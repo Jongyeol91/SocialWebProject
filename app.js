@@ -1,123 +1,56 @@
 require('dotenv').config();
 
-const express       = require('express'),
-      app           = express(),
-      ejs           = require('ejs'),
-      bodyParser    = require('body-parser'),
-      mongoose      = require("mongoose"),
-      passport      = require("passport"),
-      LocalStrategy = require("passport-local"),
-      moment        = require('moment'),
-      fs            = require("fs"),
-      path          = require("path"),
-      GoogleStrategy = require('passport-google-oauth20').Strategy,
-      NaverStrategy  = require('passport-naver').Strategy,
-      methodOverride = require('method-override'),
-      flash          = require('connect-flash'),
-      helmet         = require('helmet'),
-      User           = require('./models/user'),
-      Study          = require('./models/study'),
-      Comment        = require('./models/comment');
-
+const express           = require("express"),
+      ejs               = require("ejs"),
+      mongoose          = require("mongoose"),
+      moment            = require("moment"),
+      morgan            = require("morgan"),
+      methodOverride    = require("method-override"),
+      fs                = require("fs"),
+      path              = require("path"),
+      expressSession    = require("express-session")
+      passport          = require("passport"),
+      LocalStrategy     = require("passport-local"),
+      GoogleStrategy    = require("passport-google-oauth20").Strategy,
+      NaverStrategy     = require("passport-naver").Strategy,
+      flash             = require("connect-flash"),
+      helmet            = require("helmet");
       
 // require routes
-const commentRoutes     = require('./routes/comments'),
-      studyRoutes       = require('./routes/studies'),
-      indexRoutes       = require('./routes/index'),
-      kakaoLocalRoutes  = require('./routes/kakaoLocal'),
-      authRoutes        = require('./routes/auth');
+const commentRoutes     = require("./routes/comments"),
+      studyRoutes       = require("./routes/studies"),
+      indexRoutes       = require("./routes/index"),
+      kakaoLocalRoutes  = require("./routes/kakaoLocal"),
+      authRoutes        = require("./routes/auth");
+      messageRoutes     = require("./routes/message");
+
+const app = express();
       
 //mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB`, {useNewUrlParser: true});
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json()); // == express.json() 
+
+app.use(morgan("common"));
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.urlencoded({extended:true}));
+app.use(express.json()) 
 app.use(methodOverride("_method"));
 app.use(helmet());
 
 // 세션 설정
-app.use(require("express-session")({
+app.use(expressSession({
     secret:"mySecret",
     saveUninitialized: false, // false: 세션이 라이프타임동안 수정된 것이 없으면(초기화되지 않았으면) 저장하지 않는다.
-    resave: false
+    resave: false,
+    name: "studyproject",
+    cookie: {
+        httpOnly: true //javascript로 쿠키를 접근할 수 없게한다.
+    }
 }));
 app.use(flash());
 
 // 패스포트 설정
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-passport.serializeUser(function (user, done) {
-    done(null, user._id);
-});
-
-passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-        done(err, user);
-    });
-});
-
-//User모델에 username과 password있으면 _id를 자동으로 세션등록
-passport.use(new LocalStrategy(User.authenticate()));
-
-// passport.use(new LocalStrategy(function(username, password, done) {
-//     User.findOne({ username: username }, function (err, user) {
-//       if (err) { return done(err) }
-//       if (!user) { return done(null, false, {message: '아이디가 없습니다.'}) }
-//       if (user.password!= password) { return done(null, false, {message: '비빌번호가 틀렸습니다.'})}
-//       return done(null, user, {message: '로그인에 성공하였습니다.'});
-//     });
-//   }
-// ));
-passport.use(new GoogleStrategy({
-    clientID: process.env.google_key,
-    clientSecret: process.env.google_password,
-    callbackURL: process.env.google_callbackURI_aws
-},
-function(accessToken, refreshToken, profile, done) {  
-    User.findOne({'oauthId': profile.id }, (err, user) => {
-        if (err) { return done(err) }
-        if (!user) {
-             user = new User({
-                username: profile.displayName,
-                oauthId: profile.id,
-                provider: "google",
-            });
-            user.save((err) => {if (err) { console.log('save err', err) }
-                return done(err, user);
-            });
-        } else { return done(err, user, {message: '구글 로그인에 성공하였습니다.'}) }
-    });
-    }
-));
-
-passport.use(new NaverStrategy({
-    clientID: process.env.naver_key,
-    clientSecret: process.env.naver_password,
-    callbackURL: process.env.naver_callbackURI_aws
-},
-function(accessToken, refreshToken, profile, done) {
-    //console.log(profile)
-    User.findOne({ "oauthId": profile.id }, function(err, user) {
-        if (!user) {
-            user = new User({
-                //email: profile.emails[0].value,
-                oauthId : profile.id,
-                username: profile.displayName,
-                provider: 'naver',
-            });
-            user.save(function(err) {
-                if (err) console.log(err);
-                return done(err, user);
-            });
-        } else {
-            
-            return done(err, user, {message: "네이버로 로그인 성공"});
-        }
-    });
-}
-));
 
 // 로컬에 req.user을 항상 담는 미들웨어 => currentUser로 ejs에서도 사용가능해짐
 app.use((req, res, next) => {
@@ -132,13 +65,11 @@ app.use("/study", studyRoutes);
 app.use(commentRoutes);
 app.use(kakaoLocalRoutes);
 app.use(authRoutes);
-
-app.get('/cool', (req, res) => res.send(cool()))
-
+app.use(messageRoutes);
 
 const host = '0.0.0.0';
 
-app.listen( 80, host, () => {
+app.listen( 5000, host, () => {
     console.log("server has started port on 5000");
 });
 

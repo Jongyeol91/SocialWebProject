@@ -17,7 +17,7 @@ const studySchema = new mongoose.Schema({
         username:String
     },
     joinUsers: [{ type:mongoose.Schema.Types.ObjectId, ref: "User" }], 
-    comments: [{type:mongoose.Schema.Types.ObjectId, ref:"Comment"}]
+    comments: [{ type:mongoose.Schema.Types.ObjectId, ref: "Comment" }]
 });
 
 // studySchema.pre('remove', async function() {

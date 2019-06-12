@@ -1,11 +1,11 @@
 {
-  "name": "perfactstudy",
+  "name": "perfectstudy",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "start-server": "node app.js"
+    "dev": "nodemon",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
-    "cool-ascii-faces": "^1.3.4",
     "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -34,6 +33,7 @@
     "method-override": "^3.0.0",
     "moment": "^2.24.0",
     "mongoose": "^5.5.5",
+    "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
