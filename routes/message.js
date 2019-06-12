@@ -11,7 +11,7 @@ router.get("/message/user/:target_user_id/new", middleware.isLoggedIn, (req, res
             res.render("message/makeMessage.ejs", { targetUser });
         })
  
-        res.redirect("/login")
+        
     
 })
 
