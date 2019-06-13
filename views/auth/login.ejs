@@ -1,21 +1,11 @@
 <%-include("../partials/header")-%>
 <div class="loginbox">
     <h1 style="font-family: 'Noto Sans KR', sans-serif">로그인</h1>
-    <form action="/login" method="post">
-        <div class="textbox">
-            <input type="text" name="username" required=""> 
-            <label><i class="fas fa-user"></i>이름</label>
-        </div>
-        <div class="textbox">
-            <input type="password" name="password" required=""> 
-            <label><i class="fas fa-key"></i>비밀번호</label>
-        </div>
-        <button type="submit">로그인</button>
-    </form>
+       
      <a class="btn btn-block btn-social btn-google" href="/auth/google" type="submit" style="color:white;"> <i class="fab fa-google"></i> 구글로 로그인 하기</a>
         <a class="btn btn-block btn-social" type="submit" href="/auth/naver" style="color:white; background:#1EC800; font-family: 'Nanum Gothic', sans-serif; font-weight: 700"> <div>N</div>  네이버로 로그인 하기</a>
-        <span class="text-muted" style="font-size:small">회원님의 비밀번호와 개인정보는 저장되지 않습니다.</sapn>
-        
+       <!--p><a href="/register">회원가입</a>-->
+       <span class="text-muted" style="font-size:small"> 개인정보는 저장되지 않습니다.</span></p>
 </div>
 
 <%-include("../partials/footer")-%>

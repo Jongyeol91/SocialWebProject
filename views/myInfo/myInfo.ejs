@@ -1,39 +1,112 @@
 <%-include("../partials/header")-%>
 <div class="container" style="padding-top:60px">
   <div class= "row justify-content-center">
-    <div class= "col-lg-5 col-sm-8">
-      <strong><label for="inputEmail4">닉네임</label></strong>
-      <div class="form-row">
-        <input type="email" class="form-control col-lg-6" id="inputEmail4" value="<%= foundUser.username %>">
-          <!-- <button type="submit" class="btn btn-primary col-lg-6 col-sm-8 mb-3">수정(준비중)</button> -->
-      </div>
+    <div class= "col-lg-9 col-sm-12">
+     
 
-      <strong>내가 만든 스터디</strong>
-      <ul class="list-group list-group-flush mb-3">
-        <% foundUser.ownStudy.forEach((study) => { %>
-          <div class="list-group">
-            <a href="/study/<%= study._id %>" class="list-group-item list-group-item-action"><%= study.studyName %></a>
-          </div>
-        <% }) %>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">회원정보</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">개설스터디</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">받은쪽지</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="getMessage-tab" data-toggle="tab" href="#getMessage" role="tab" aria-controls="getMessage" aria-selected="false">보낸쪽지</a>
+        </li>
       </ul>
 
-      <strong>가입일</strong>
-      <ul class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action"><%= moment(foundUser.createdDate).format("YYYY년 MM월 DD일") %></a>
-      </ul>
+      <div class="tab-content" id="myTabContent">
+        
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+           <strong><label for="inputEmail4" class="mt-3">닉네임</label></strong>
+            <ul class="list-group list-group-flush mb-3">
+              <a href="#" class="list-group-item list-group-item-action"><%= foundUser.username %></a>
+            </ul>
+                
+          <strong>가입일</strong>
+          <ul class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action"><%= moment(foundUser.createdDate).format("YYYY년 MM월 DD일") %></a>
+          </ul>
+        </div><!--회원정보 끝-->
 
-      <strong>받은 쪽지</strong>
-      <ul class="list-group list-group-flush mb-3">
-        <% foundUser.messages.forEach((message) => { %>
-          <div class="list-group">
-             <p class="list-group-item list-group-item-action"><%= message.messageAuthor %></p>
-             <p class="list-group-item list-group-item-action"><%= message.content %></p>
-             <p class="list-group-item list-group-item-action"><%= message.createdDate %></p>
-          </div>
-        <% }) %>
-      </ul>
-      
-    </div>
-  </div>
-</div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col">제목</th>
+                <th scope="col">개설일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% foundUser.ownStudy.forEach((study) => { %>
+                <tr>
+                  <td> <a href="/study/<%= study._id %>"><%=study.studyName%></a> </td>
+                  <td>  <%= moment(study.makedDate).format("YY년 MM월 DD일 ") %> 개설 </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+            </ul>
+        </div><!--내가 만든 스터디 끝-->
+
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col" style="width:100px">보낸사람</th>
+                <th scope="col">내용</th>
+                <th scope="col">날짜</th>
+                <th scope="col"><i class="far fa-paper-plane"></i></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% foundUser.messages.forEach((message) => { %>
+                <% if(!(message.messageAuthor == currentUser.username)) { %>
+                    <tr>
+                      <td> <%= message.messageAuthor %></td>
+                      <td> <%= message.content %></td>
+                      <td> <%= moment(message.createdDate).format("YY.MM.DD") %></td>
+                      <td> <a href="/message/user/<%=message.messageAuthorId %>/new"> <i class="far fa-paper-plane"></i> </a></td>
+                    </tr>
+                <% } %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div><!--받은쪽지 끝-->
+
+        <div class="tab-pane fade" id="getMessage" role="tabpanel" aria-labelledby="getMessage-tab">
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col" style="width:100px">받은사람</th>
+                <th scope="col">내용</th>
+                <th scope="col">날짜</th>
+                <th scope="col"><i class="far fa-paper-plane"></i></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% foundUser.messages.forEach((message) => { %>
+                <% if(message.messageAuthor === currentUser.username) { %>
+                    <tr>
+                      <td> <%= message.messageTarget %> </td>
+                      <td> <%= message.content %></td>
+                      <td> <%= moment(message.createdDate).format("YY.MM.DD") %></td>
+                      <td> <a href="/message/user/<%=message.messageTargetId %>/new"> <i class="far fa-paper-plane"></i> </a></td>
+                    </tr>
+                <% } %>
+              <% }) %>
+            </tbody>
+          </table>
+        </div><!-- 보낸 쪽지 끝 -->
+
+      </div><!--tap콘탠트 끝-->
+    </div><!--col-->
+  </div><!--row-->
+</div><!--container-->
 <%-include("../partials/footer")-%>

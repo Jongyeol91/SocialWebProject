@@ -96,11 +96,11 @@ indexControllerObj.getUserInfo = (req, res) => {
     //유저한명을 찾고 개설한 스터디와 합친후 결과 반환
     User.findById(req.params.id)
     .populate({path:"ownStudy", model: "Study"})
-    .populate({path:"messages", model: "Message"})
+    .populate({path:"messages", model: "Message", options: { sort: { "createdDate": -1 } }})
     .exec((err, foundUser) => {
         res.render("myInfo/myInfo.ejs", { foundUser, moment })
     })
-}
+}   
 
   
 

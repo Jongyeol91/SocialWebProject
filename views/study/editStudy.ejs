@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-4 font-weight-bold">
+    <div class="col-md-4 font-weight-bold mt-4">
     
         <label class="d-inline" >스터디 종류</label><div class="d-inline" id="categoriesWarning"></div>
         <div class="form-group font-weight-light">  
@@ -58,8 +58,9 @@
         </div>
     <div class="col-md-8 mt-4">
       
-      <label for="map">스터디 희망 장소를 검색하고 등록하세요</label>
+      <Strong><label for="map">스터디 희망 장소를 검색하고 등록하세요</label></Strong>
       <div id="map" style="width:100%;height:300px;"></div>
+      <form onsubmit="return loadText(event)">
       <div class="form-group">
           <div class="row">
             <div class="col-md-8 mt-2">
@@ -67,9 +68,9 @@
             </div>
               
               <div class="col-md-4 mt-2">
-                <input class="btn btn-primary btn-block" type="button" value="검색/등록" id="locbtn">
+                <input class="btn btn-primary btn-block" type="button" value="장소검색" id="locbtn">
               </div>
-
+        </form>
           </div>
       </div>
 

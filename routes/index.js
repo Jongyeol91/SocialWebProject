@@ -22,6 +22,11 @@ router.get("/login", (req, res) => {
     res.render("auth/login.ejs");
 });
 
+// 개발자 로그인 창
+router.get("/managerLogin", (req, res) => {
+  res.render("auth/managerLogin.ejs");
+});
+
 // 로컬 로그인 기능
 //router.post("/login", indexController.userLogin );
 
