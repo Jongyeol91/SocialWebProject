@@ -12,23 +12,25 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.google_password,
   callbackURL: process.env.google_callbackURI_aws
 },
-async function(accessToken, refreshToken, profile, done) {  
-   let user = await User.findOne({'oauthId': profile.id })
-      if (err) { 
-        return done(err) 
-      }
-      if (!user) {
-        user = new User({
-          username: profile.displayName,
-          oauthId: profile.id,
-          provider: "google",
-        });
-        await user.save();
-        done(err, user);
-      } else {
-         return done(null, user, { message: '구글 로그인에 성공하였습니다.' }) }
+function(accessToken, refreshToken, profile, done) {  
+   User.findOne({'oauthId': profile.id })
+   .then((user)=>{
+    if (!user) {
+      user = new User({
+        username: profile.displayName,
+        oauthId: profile.id,
+        provider: "google",
+      })
+   .then(() => {
+    user.save()
+    done(err, user);
+   })
+  } else { 
+    return done(null, user);
+  }
+})
 }
-));
+))
 
 //promise로 구현
 passport.use(new NaverStrategy({
