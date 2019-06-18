@@ -102,7 +102,6 @@ indexControllerObj.forgot = (req, res) => {
                 user.resetPasswordToken = token;
                 user.resetPasswordExpires = Date.now() + 3600000 //1시간
                 await user.save()
-                console.log(user)
               }catch(err){
                 console.log(err)
                 req.flash("error", "등록된 이메일이 없습니다.")
