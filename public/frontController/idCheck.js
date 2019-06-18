@@ -18,7 +18,8 @@ function checkId() {
     if(userID==''){
         document.getElementById("checkIdArea").innerHTML = `<span style="color: orange"> 아이디를 입력하세요 </sapn>`
     } else {
-        fetch("/checkId", {
+        const checkIdRequest = new Request("/checkid");
+        fetch(checkIdRequest, {
             method: "POST",
             headers: new Headers({
             'Content-Type': "application/json"

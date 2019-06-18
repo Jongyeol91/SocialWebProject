@@ -24,7 +24,8 @@ router.get("/login", (req, res) => {
 });
 
 // ajax로부터 옴
-router.post("/checkId", (req, res) => {
+router.post("/checkid", (req, res) => {
+  console.log("from checkId header")
   let userID = req.body.userID
   User.findOne({username: userID}, (err, result) => {
     if(result){
@@ -33,7 +34,7 @@ router.post("/checkId", (req, res) => {
       res.send({possibleId: true})
     }
   })
-});
+});``
 
 // 개발자 로그인 창
 router.get("/managerLogin", (req, res) => {

@@ -69,7 +69,7 @@ app.use(messageRoutes);
 
 const host = '0.0.0.0';
 
-app.listen( process.env.PORT || 80, host, () => {
+app.listen( process.env.PORT || 5000, host, () => {
     console.log("server has started port on 5000");
 });
 
