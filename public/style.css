@@ -1,24 +1,45 @@
 
 .navbar-custom .navbar-text {
-    color: rgba(2,3,4,.8);
+    color: rgba(255,3,4,.8);
 }
 
-/* change the link color */
-.navbar-custom .navbar-nav .nav-link {
-    color: rgba(219, 226, 231, 0.774);
+.navbar-custom .navbar-brand, 
+.navbar-custom .navbar-nav .nav-link,
+.navbar-custom .navbar-toggler .navbar-toggler-icon
+ {
+    color: rgba(236, 113, 65, 0.774);
 }
 /* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:focus .nav-link,
-.navbar-custom .nav-item:hover .nav-link {
-    color:  rgba(250, 249, 177, 0.863);;
+.navbar-custom .nav-item:hover .nav-link,
+.navbar-custom .nav-link:hover, 
+.navbar-custom .nav-link:focus,
+.navbar-custom .nav-link.active,
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .navbar-brand.active
+ {
+    color:  rgba(221, 169, 126, 0.863);;
 }
+
+
+
 
 body{    
     margin-top: 60px; 
     font-family: 'Open Sans', sans-serif;
 }
 
+h2{
+    font-size: 1.5em
+}
+h3{
+    font-size: 1em
+}
+h5{
+    font-size: 1em
+}
 
 #mainCard {
     height: 200px;

@@ -1,8 +1,16 @@
 <%-include("../partials/header")-%>
 <div class="loginbox">
     <h1 style="font-family: 'Noto Sans KR', sans-serif">로그인</h1>
-       
-     <a class="btn btn-block btn-social btn-google" href="/auth/google" type="submit" style="color:white;"> <i class="fab fa-google"></i> 구글로 로그인 하기</a>
+       <form action="/login" method="post">
+            <div class="form-group d-flex">
+                <input type="text" name="username" class="form-control mr-1 w-100" aria-describedby="emailHelp" placeholder="아이디">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control w-100 mt-2" placeholder="비밀번호">
+            </div>
+            <button class="btn btn-primary btn-block d-inline mt-2 mb-3"type="submit">확인</button>
+        </form>
+        <a class="btn btn-block btn-social btn-google" href="/auth/google" type="submit" style="color:white;"> <i class="fab fa-google"></i> 구글로 로그인 하기</a>
         <a class="btn btn-block btn-social" type="submit" href="/auth/naver" style="color:white; background:#1EC800; font-family: 'Nanum Gothic', sans-serif; font-weight: 700"> <div>N</div>  네이버로 로그인 하기</a>
        <!--p><a href="/register">회원가입</a>-->
        <span class="text-muted" style="font-size:small"> 개인정보는 저장되지 않습니다.</span></p>

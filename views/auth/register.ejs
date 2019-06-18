@@ -1,9 +1,77 @@
 <%-include("../partials/header")-%>
 
-    <form action="/register" method="post">
-        <input type= "text" name ="username"> 이름
-        <input type= "password" name="password"> 비빌번호
-        <button type="submit">회원가입</button>
-    </form>
-    
+<div class="container ">
+    <div class="row justify-content-center  ">
+        <div class="col-lg-5 mt-4 p-4 border" style="background: rgba(10, 0, 0, 0.05)">
+            <h2 class="text-center mb-4">회원가입</h2>
+            <form onsubmit="return finalSubmit(event)">
+                <div class="form-group">
+                    <h5 class="text-muted d-inline"><label for="userID">아이디</label></h5>
+                    <div id="checkId" class="d-inline"></div> 
+                    <div class = row>
+                        <div class="col-lg-8 col-sm-12">
+                            <input type="text" class="form-control" id="userID" name="id" placeholder="아이디를 입력하세요" onkeyup="checkIdLength(this.value)">
+                        </div>
+                        <div class="col-lg-4 col-sm-12" >
+                            <button class="btn btn-primary btn-block" onclick="checkId()">중복검사</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h5 class=text-muted d-inline><label for="email">이메일</label></h5>
+                    <input type="email" class="form-control" id="email" name="password" aria-describedby="emailHelp" placeholder="이메일 주소를 입력하세요">
+                </div>
+                <div class="form-group">
+                     <h5 class=text-muted><label for="password1">비밀번호</label></h5>
+                     <span id ="passowrd1Label"></span>
+                    <input type="password" class="form-control" id="password1" name="password" placeholder="비밀번호" onkeyup="checkFirstPassword(this.value)">
+                </div>
+                <div class="form-group">
+                    <h5 class=text-muted><label for="password2">비밀번호 확인</label></h5>
+                    <span id ="passowrd2Label"></span>
+                    <input type="password" class="form-control" id="password2" name="password" placeholder="비밀번호 확인" onkeyup="checkSecondPassword(this.value)">
+                </div>
+                <div id="equalityMSG"></div>
+                <button type="submit" class="btn btn-primary btn-block">가입하기</button>
+                <small class="form-text text-muted">비밀번호는 단방향 해시 알고리즘을 통해 암호화되어 관리자도 알 수 없습니다.</small>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/frontController/idCheck.js"></script>
+<script src="/frontController/passwordCheck.js"></script>
+<script>
+    let isCheckedId = false
+   
+    function finalSubmit(e){
+        e.preventDefault()
+        var username = document.getElementById("userID").value
+        var email = document.getElementById("email").value
+        var password = document.getElementById("password1").value
+        let passwordValidity = checkValadity();
+       
+       if (!isCheckedId) {
+            document.getElementById("checkId").innerHTML = `<span style="color: orange"> 아이디를 입력하세요 </sapn>`
+            return false
+        } 
+        if (!passwordValidity) {
+            alert("비밀번호를 확인하세요")
+            return false
+        }
+        fetch("/register",{
+            method: "POST",
+            headers: new Headers({
+                'Content-Type': "application/json"
+            }),
+             body: JSON.stringify({
+                data: {username, email, password}
+            })
+        }).then(() => {
+            window.location.href = "/"
+        })
+    }
+
+</script>
+
 <%-include("../partials/footer")-%>

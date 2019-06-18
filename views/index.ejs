@@ -172,7 +172,7 @@ function setMarker(study) {
 			//window.location.href = `http://localhost:3000/study/${study._id}`;
 		 fetch(`/study/${study._id}`,{
 			 method:"get"
-			}).then(window.location.href=(`https://powerful-dusk-89271.herokuapp.com/study/${study._id}`))
+			}).then(window.location.href=(`/study/${study._id}`))
 });
 }
 
@@ -187,7 +187,6 @@ window.onload = function(){
 		return res.json();
 	})
 	.then((studies) => {
-		console.log("스터디들", studies)
 		studies.forEach(study => {
 			setMarker(study)
 		})

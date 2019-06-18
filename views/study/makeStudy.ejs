@@ -142,8 +142,10 @@ function makeStudy() {
         }),
         body: JSON.stringify({
             data: data
-        })
-    }).then(window.location.href= "/")
+        }),
+    }).then(()=>{
+      window.location.href= "/"
+    })
 } 
 
  </script>

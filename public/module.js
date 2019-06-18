@@ -18,7 +18,6 @@ function makeMarkerImage (){
 // ajax => 로컬주소 요청 => 가공 => html에 반영
 function loadText(e) {
     e.preventDefault();
-    console.log("찍히나")
     const inputvalue = document.getElementById("searchInput").value;
     const myRequest = new Request("/getLocal");
 

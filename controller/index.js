@@ -2,24 +2,9 @@ const Study = require('../models/study');
 const User = require('../models/user');
 const passport = require('passport');
 const moment = require('moment');
+const crypto = require('crypto');
+const nodemailer = require("nodemailer")
 const indexControllerObj = {};
-
-// indexControllerObj.checkCategories = function (){
-//     checkboxValueArr = getCheckedCategoriesFor();
-//     checkboxValueArr.forEach((e)=>{
-//       if( e=== "사기업"){
-//         document.getElementById("customCheck1").checked = true
-//       } else if (e === "공기업") {
-//         document.getElementById("customCheck2").checked = true
-//       } else if (e === "인적성") {
-//         document.getElementById("customCheck3").checked = true
-//       } else if (e === "면접") {
-//         document.getElementById("customCheck4").prop("checked", checked);
-//       } else if (e === "자소서") {
-//         document.getElementById("customCheck5").prop("checked", checked);
-//       }
-//     });
-// };
 
 indexControllerObj.getStudies = (req, res) => {
   const perPage = 20;
@@ -58,8 +43,9 @@ indexControllerObj.getStudiesByCategories = (req, res) => {
 
 //로컬 회원등록
 indexControllerObj.userRegister = (req, res) => {
-  let newUser = new User({username : req.body.username});
-  let password = req.body.password;
+    console.log(req.body.data)
+  let newUser = new User({username: req.body.data.username, email: req.body.data.email});
+  let password = req.body.data.password;
   // register은 passport의 기능
   User.register(newUser, password, (err, user)=>{
       if(err){
@@ -101,6 +87,63 @@ indexControllerObj.getUserInfo = (req, res) => {
         res.render("myInfo/myInfo.ejs", { foundUser, moment })
     })
 }   
+
+// 노드메일러를 활용하여 비밀번호 변경 메일 보내기
+indexControllerObj.forgot = (req, res) => {
+
+        sendEmail()
+          async function sendEmail (){
+              var buf =  crypto.randomBytes(20)
+              var token = buf.toString('hex')
+           
+            try {
+              try {
+                var user = await User.findOne({email: req.body.email})
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = Date.now() + 3600000 //1시간
+                await user.save()
+                console.log(user)
+              }catch(err){
+                console.log(err)
+                req.flash("error", "등록된 이메일이 없습니다.")
+                return res.redirect("/forgot")
+              }
+      
+              try {
+                var smtpTransport = nodemailer.createTransport({
+                port: 587,
+                secure: false,
+                service:"Gmail",
+                auth:{
+                  user: "pjr159@gmail.com",
+                  pass: process.env.googlePW
+                }
+              });
+              
+                await smtpTransport.sendMail({
+                  from: "pjr159@gmail.com",
+                  to: user.email,
+                  subject: "우리동네 스터디 비밀번호 변경",
+                  html: 
+                  `<div>
+                  <p>회원님께서는 우리동네 스터디의 비밀번호 변경을 요청하셨기에 이 링크를 받았습니다. 
+                  링크를 클릭하시면 비밀번호 변경 창으로 이동합니다.</p>
+                  <p>만약 비밀번호 변경을 요청하신 적이 없으면 이 메일을 무시하시면 됩니다.</p>
+                  <Strong><a href="http://${req.headers.host}/reset/${token}">비밀번호 변경하기 </a></Strong>
+                  </div>`
+                })
+                req.flash("success", `이메일을 ${user.email}의 주소로 보냈습니다.`)
+                res.redirect("/forgot")
+              } catch(err) {
+                console.log("보내기 실패", err)
+                  res.redirect("/forgot")
+              }
+            } catch(e) {
+              console.log("전체 에러", e)
+            }
+          }
+      }
+
 
   
 

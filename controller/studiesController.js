@@ -32,7 +32,7 @@ studyControllerObj.getMakeStudyPage = (req, res) => {
 }
 
 // 스터디 생성 (post)
-studyControllerObj.makeStudyPage =  (req, res) => {
+studyControllerObj.makeStudy =  (req, res) => {
     let studyName = req.body.data.studyName;
     let description = req.body.data.description;
     let recruNum =req.body.data.recruNum;
@@ -49,10 +49,9 @@ studyControllerObj.makeStudyPage =  (req, res) => {
     
     Study.create(newStudy)
     .then((newlycreated) => {
-        return User.findOneAndUpdate({_id: req.user._id}, { $push:{ownStudy: newlycreated._id}}, {new: true})
-    })
-    .then((updatedUser) => {
-        console.log(updatedUser)
+        User.findOneAndUpdate({_id: req.user._id}, { $push:{ownStudy: newlycreated._id}}, {new: true})
+        req.flash("success", "성공적으로 스터디를 개설했습니다.")
+        res.status(200).send();
     })
     .catch((err) => {
         console.log(err)

@@ -95,6 +95,34 @@ passport.authenticate('naver', {
     res.redirect('/'); 
 });
 
+// 노드메일러
+// import nodemailer from 'nodemailer';
 
+// router.get('/mail', async(req, res) => {
+//     const smtpTransport = nodemailer.createTransport({
+//         service: 'Gmail',
+//         auth: {
+//             user: 'ID@gmail.com',
+//             pass: 'PW'
+//         }
+//     })
+
+//     const mailOptions = {
+//         from: '보내는 메일',
+//         to: '받는 메일',
+//         subject: '제목',
+//         //text: '내용'
+//         html: '<h1>HTML Test<h1><p><img src="https://postfiles.pstatic.net/MjAxODEyMzFfMTk1/MDAxNTQ2MjMyNjU4NDc3.apeLcP_BEpVEj0z6SvTebsUGG8DJTbTSZmdHgNH82h4g.mHNubV6TsVtEEUt8ufphzKleSvQOTENsNTaxzqWeFgog.JPEG.dilrong/Screenshot_2018-12-31_at_13.55.57.jpg?type=w773"/></p>'
+//     };
+    
+//     await smtpTransport.sendMail(mailOptions, (error, responses) =>{
+//         if(error){
+//             res.json(err);
+//         }else{
+//             res.json(sucess);
+//         }
+//         smtpTransport.close();
+//     });
+// });
 
 module.exports = router
