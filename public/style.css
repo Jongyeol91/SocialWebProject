@@ -20,11 +20,47 @@
 .navbar-custom .navbar-brand:focus,
 .navbar-custom .navbar-brand.active
  {
-    color:  rgba(221, 169, 126, 0.863);;
+    color:  rgb(54, 29, 3);;
 }
 
+#page-container {
+    position: relative;
+    min-height: 100vh;
+  }
+#content-wrap {
+    padding-bottom: 5.5rem;    /* Footer height */
+}
 
+#customfooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 5.5rem;    
+    background: rgba(219, 219, 219, 0.432);
+    font-family: 'Nanum Gothic', sans-serif; 
+}
 
+.customJumbotron {
+    font-family: 'Nanum Gothic', sans-serif; 
+    color: rgba(252, 252, 252, 0.959);
+    background : url("/main3.jpg");
+    background-position: center 50%;
+    background-size: cover;
+}
+
+/* .customJumbotron-footer{
+    height: 100px;
+    margin-bottom: 0px;
+    font-family: 'Nanum Gothic', sans-serif; 
+    color: rgba(252, 252, 252, 0.959);
+    background-position: center 50%;
+    background-size: cover;
+} */
+.customJumbotron-border{
+    width:500px;
+    padding: 10px;
+    background: rgba(0,0,0,.8)
+}
 
 body{    
     margin-top: 60px; 

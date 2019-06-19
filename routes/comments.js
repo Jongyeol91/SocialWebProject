@@ -22,6 +22,7 @@ router.post("/study/:id/comment/new", middleware.isLoggedIn, (req, res) => {
             } else {
                 foundStudy.comments.push(comment._id);
                 foundStudy.save(); 
+                req.flash("success", req.user.username + "댓글이 달렸습니다.");
                 res.redirect("/study/" + studyId);
             }   
         });

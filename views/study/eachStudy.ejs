@@ -51,7 +51,7 @@
                             <span class="pull-right text-muted" style="font-size:small"><%= moment(comment.createdDate).format("YYYY년 MM월 DD일") %></span>
                             <% if(currentUser && currentUser._id.equals(comment.author._id)) { %>
                                 <a class="btn btn-sm btn-warning" href="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/edit">수정하기</a>
-                                <form id="delete-form" action ="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/delete?_method=delete" method="POST">
+                                <form id="delete-comment-form" action ="/study/<%=foundStudy._id%>/comments/<%=comment._id%>/delete?_method=delete" method="POST">
                                     <button class="btn btn-sm btn-danger" type="submit">삭제하기</button> 
                                 </form>
                             <% } %>

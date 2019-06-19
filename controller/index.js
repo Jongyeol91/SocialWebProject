@@ -135,6 +135,7 @@ indexControllerObj.forgot = (req, res) => {
                 res.redirect("/forgot")
               } catch(err) {
                 console.log("보내기 실패", err)
+                req.flash("error", `이메일을 ${user.email}의 주소로 보내는데 실패했습니다.`)
                   res.redirect("/forgot")
               }
             } catch(e) {
