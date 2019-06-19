@@ -6,7 +6,7 @@ const moment = require('moment');
 const router = express.Router({ mergeParams: true });
 
 // 보낸 쪽지, 받은 쪽지 정보 확인 창
-router.get("/user/:id/note", (req, res) => {
+router.get("/message/user/:id", (req, res) => {
     User.findById(req.params.id)
     .populate({path:"ownStudy", model: "Study"})
     .populate({path:"messages", model: "Message", options: { sort: { "createdDate": -1 } }})
