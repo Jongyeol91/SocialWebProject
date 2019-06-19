@@ -69,7 +69,7 @@ app.use(messageRoutes);
 
 const host = '0.0.0.0';
 
-app.listen(5000, () => {
+app.listen(80, () => {
     console.log("server has started");
 });
 
