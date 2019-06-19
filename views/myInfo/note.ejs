@@ -1,0 +1,77 @@
+<%-include("../partials/header")-%>
+<div class="container" style="padding-top:60px">
+  <div class= "row justify-content-center">
+    <div class= "col-lg-9 col-sm-12">
+
+<!--tap nav-->
+        <ul class="nav nav-tabs" id="myMessageTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="getMessage-tab" data-toggle="tab" href="#getMessage" role="tab" aria-controls="getMessage" aria-selected="true">받은쪽지</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="sendMessage-tab" data-toggle="tab" href="#sendMessage" role="tab" aria-controls="sendMessage" aria-selected="false">보낸쪽지</a>
+            </li>
+        </ul>
+<!--tap nav 끝-->
+        <div class="tab-content" id="myTabContent">
+ <!-- 받은 쪽지 -->
+            <div class="tab-pane fade show active" id="getMessage" role="tabpanel" aria-labelledby="getMessage-tab">
+                <table class="table table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="width:100px">보낸사람</th>
+                        <th scope="col">내용</th>
+                        <th scope="col">날짜</th>
+                        <th scope="col" style="width:50px">답장</i></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% foundUser.messages.forEach((message) => { %>
+                        <% if(!(message.messageAuthor == currentUser.username)) { %>
+                            <tr>
+                            <td> <%= message.messageAuthor %></td>
+                            <td> <%= message.content %></td>
+                            <td> <%= moment(message.createdDate).format("YY.MM.DD") %></td>
+                            <td> <a href="/message/user/<%= message.messageAuthorId %>/new"> <i class="far fa-paper-plane"></i> </a></td>
+                            </tr>
+                        <% } %>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+<!--받은쪽지 끝-->
+
+ <!-- 보낸쪽지 -->
+            <div class="tab-pane fade" id="sendMessage" role="tabpanel" aria-labelledby="sendMessage-tab">
+                <table class="table table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="width:100px">받은사람</th>
+                        <th scope="col">내용</th>
+                        <th scope="col">날짜</th>
+                        <th scope="col" style="width:100px">다시보내기</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% foundUser.messages.forEach((message) => { %>
+                        <% if(message.messageAuthor === currentUser.username) { %>
+                            <tr>
+                            <td> <%= message.messageTarget %> </td>
+                            <td> <%= message.content %></td>
+                            <td> <%= moment(message.createdDate).format("YY.MM.DD") %></td>
+                            <td> <a href="/message/user/<%=message.messageTargetId %>/new"> <i class="far fa-paper-plane"></i> </a></td>
+                            </tr>
+                        <% } %>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+<!-- 보낸 쪽지 끝 -->
+
+            </div><!--tap콘탠트-->  
+       </div><!--col-->
+  </div><!--row-->
+</div><!--container-->
+<%-include("../partials/footer")-%>

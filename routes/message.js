@@ -2,8 +2,20 @@ const express = require("express");
 const User = require("../models/user");
 const Message = require("../models/message");
 const middleware = require('../middleware');
+const moment = require('moment');
 const router = express.Router({ mergeParams: true });
 
+// 보낸 쪽지, 받은 쪽지 정보 확인 창
+router.get("/user/:id/note", (req, res) => {
+    User.findById(req.params.id)
+    .populate({path:"ownStudy", model: "Study"})
+    .populate({path:"messages", model: "Message", options: { sort: { "createdDate": -1 } }})
+    .exec((err, foundUser) => {
+        res.render("myInfo/note.ejs", { foundUser, moment })
+    })
+})
+
+// 쪽지 입력창
 router.get("/message/user/:target_user_id/new", middleware.isLoggedIn, (req, res) => {
     User.findOne({_id: req.params.target_user_id})
     .then((targetUser) => {

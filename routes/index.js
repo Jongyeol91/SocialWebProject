@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const passport = require("passport")
-const User = require("../models/user")
+const passport = require("passport");
+const User = require("../models/user");
+
 const indexController = require('../controller'); // index.js의 파일명은 따로 임포트 해줄 필요가 없음
 
 //전체출력

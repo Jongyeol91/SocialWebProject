@@ -7,34 +7,65 @@
             <form onsubmit="return finalSubmit(event)">
                <input type ="hidden" id="token" value="<%=token%>">
                 <div class="form-group">
-                     <h5 class=text-muted><label for="password1">비밀번호</label></h5>
-                     <span id ="password1Label"></span>
-                    <input type="password" class="form-control" id="password1" name="password" placeholder="비밀번호" onkeyup="checkFirstPassword(this.value)">
+                     <h5 class=text-muted><label for="resetPassword">비밀번호</label></h5>
+                     <span id ="resetPasswordLabel"></span>
+                    <input type="password" class="form-control" id="resetPassword" name="resetPassword" placeholder="비밀번호" onkeyup="checkFirstPassword(this.value, this.id)">
                 </div>
 
                 <div class="form-group">
-                    <h5 class=text-muted><label for="password2">비밀번호 확인</label></h5>
-                    <span id ="password2Label"></span>
-                    <input type="password" class="form-control" id="password2" name="password" placeholder="비밀번호 확인" onkeyup="checkSecondPassword(this.value)">
+                    <h5 class=text-muted><label for="resetPassword2">비밀번호 확인</label></h5>
+                    <span id ="resetPassword2Label"></span>
+                    <input type="password" class="form-control" id="resetPassword2" name="resetPassword2" placeholder="비밀번호 확인" onkeyup="checkSecondPassword(this.value)">
                 </div>
 
-                <div id="equalityMSG"></div>
+                <div id="resetEqualityMSG"></div>
                 <button type="submit" class="btn btn-secondary btn-block">제출</button>
             </form>
         </div>
     </div>
 </div>
 
-<script src="/frontController/passwordCheck.js"></script>
 <script>
-let isCheckedId = false
  let token = document.getElementById("token").value
-   
+    // 패스워드 길이검사
+  function checkFirstPassword(password){
+    if (password.length < 8) {
+       document.getElementById("resetEqualityMSG").innerHTML =''
+       document.getElementById("resetPasswordLabel").innerHTML = `<span style="color: orange"> 비밀번호를 8자리 이상 입력하세요 </sapn>`
+   } else if (password.length >= 8) {
+       document.getElementById("resetPasswordLabel").innerHTML = `<span style="color: green"></span>`
+       return checkValadity()
+   } 
+}
+
+// 패스워드 길이검사 2
+function checkSecondPassword(password){
+   if (password.length < 8) {
+       document.getElementById("resetEqualityMSG").innerHTML =''
+       document.getElementById("resetPassword2Label").innerHTML = `<span style="color: orange"> 비밀번호를 8자리 이상 입력하세요 </sapn>`
+   } else if (password.length >= 8) {
+       document.getElementById("resetPassword2Label").innerHTML = `<span style="color: green"> </span>`
+       return checkValadity()
+   } 
+}
+
+// 8자리 이상으로 키 입력이 들어오면 패스워드 동일한지 검사
+function checkValadity(){
+   var currentPwd1 = document.getElementById("resetPassword").value
+   var currentPwd2 = document.getElementById("resetPassword2").value
+   if((currentPwd1.length >= 8) && (currentPwd2.length >= 8)){
+       if ( (currentPwd1 === currentPwd2) && !(currentPwd1.length === 0) && !(currentPwd2.length === 0) ) {
+           document.getElementById("resetEqualityMSG").innerHTML = `<span style="color: green"> 비밀번호가 같습니다. </sapn>`
+           return true
+       } else if (!(currentPwd1 === currentPwd2)) {
+           document.getElementById("resetEqualityMSG").innerHTML = `<span style="color: red"> 비밀번호가 다릅니다. </sapn>`
+        }
+   }
+}
     function finalSubmit(e){
         e.preventDefault()
-        var password = document.getElementById("password1").value
+        var password = document.getElementById("resetPassword").value
         let passwordValidity = checkValadity();
-       
      
         if (!passwordValidity) {
             alert("비밀번호를 확인하세요")
@@ -52,6 +83,8 @@ let isCheckedId = false
             window.location.href = "/"
         })
     }
+
+    
 </script>
 
 <%-include("../partials/footer")-%>
