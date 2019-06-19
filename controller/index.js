@@ -115,7 +115,7 @@ indexControllerObj.forgot = (req, res) => {
                 service:"Gmail",
                 auth:{
                   user: "pjr159@gmail.com",
-                  pass: process.env.googlePW
+                  pass: process.env.GooglePW
                 }
               });
               
