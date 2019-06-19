@@ -21,7 +21,7 @@ const commentRoutes     = require("./routes/comments"),
       studyRoutes       = require("./routes/studies"),
       indexRoutes       = require("./routes/index"),
       kakaoLocalRoutes  = require("./routes/kakaoLocal"),
-      authRoutes        = require("./routes/auth");
+      authRoutes        = require("./routes/auth"),
       messageRoutes     = require("./routes/message");
 
 const app = express();
