@@ -69,8 +69,8 @@ app.use(messageRoutes);
 
 const host = '0.0.0.0';
 
-app.listen( process.env.PORT || 5000 || 80, host, () => {
-    console.log("server has started port on 5000");
+app.listen(80, () => {
+    console.log("server has started");
 });
 
 
