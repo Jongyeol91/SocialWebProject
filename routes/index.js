@@ -4,6 +4,9 @@ const passport = require("passport");
 const User = require("../models/user");
 
 const indexController = require('../controller'); // index.js의 파일명은 따로 임포트 해줄 필요가 없음
+router.get("/ping", (req, res) => {
+  res.sendStatus(200)
+})
 
 //전체출력
 router.get("/", indexController.getStudies);
