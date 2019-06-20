@@ -69,6 +69,10 @@ app.use(messageRoutes);
 
 const host = '0.0.0.0';
 
+app.get("/ping", (req, res) => {
+    res.sendStatus(200)
+} )
+
 app.listen(80, () => {
     console.log("server has started");
 });

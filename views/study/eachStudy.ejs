@@ -84,7 +84,7 @@ function makeMarkerImage (){
     return markerImage
 }
 
-window.onload = function() {  
+window.onload= function(){
     fetch("/study/getlatlng", {
         method:"post",
         headers: new Headers({ 'Content-Type': "application/json" }),
