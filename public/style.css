@@ -46,6 +46,7 @@
     background : url("/main3.jpg");
     background-position: center 50%;
     background-size: cover;
+    height: 300px;
 }
 
 /* .customJumbotron-footer{
@@ -57,9 +58,8 @@
     background-size: cover;
 } */
 .customJumbotron-border{
-    width:500px;
+    color: rgba(253,253,253);
     padding: 10px;
-    background: rgba(0,0,0,.8)
 }
 
 body{    
