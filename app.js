@@ -73,6 +73,11 @@ app.get("/ping", (req, res) => {
     res.sendStatus(200)
 } )
 
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /");
+});
+
 app.listen(5000   , () => {
     console.log("server has started");
 });
