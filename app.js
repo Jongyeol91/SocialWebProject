@@ -71,7 +71,7 @@ const host = '0.0.0.0';
 
 app.get("/ping", (req, res) => {
     res.sendStatus(200)
-} )
+})
 
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
@@ -81,5 +81,6 @@ app.get('/robots.txt', function (req, res) {
 app.listen(5000   , () => {
     console.log("server has started");
 });
+
 
 

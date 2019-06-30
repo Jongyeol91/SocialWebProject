@@ -69,20 +69,18 @@ const checkCheckbox = (function () {
     return {
         ischecked: function (checkbox, locId) {
             markerImage = makeMarkerImage();
-            let maxSelect = 1 // 장소 최대 선택 갯수
+            let maxSelect = 2 // 장소 최대 선택 갯수
             
             if (checkbox.checked) {
                 let latlngObj = getLatLng(checkbox);
-                
-                document.querySelectorAll("input[name=searchLoc]:checked").length > maxSelect 
-                
                 let checkboxies= document.querySelectorAll("input[name=searchLoc]")
                 
-                checkboxies.forEach (checkbox => {
-                    if (!checkbox.checked)
-                        checkbox.disabled = true
-                })
-
+                if(document.querySelectorAll("input[name=searchLoc]:checked").length >= maxSelect ){ // 최대 선택 갯수를 넘으면
+                    checkboxies.forEach (checkbox => {
+                        if (!checkbox.checked)
+                            checkbox.disabled = true
+                    })
+                }
                 checkedLocs.push({
                     "lat": latlngObj.lat,
                     "lng": latlngObj.lng,

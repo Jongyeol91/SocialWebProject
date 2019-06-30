@@ -98,7 +98,6 @@
 
 <script>
 document.getElementById('locbtn').addEventListener('click', loadText);
-
 document.getElementById('makeStudy').addEventListener('click', function(){
   
   var isStudyName = document.getElementById("studyName").checkValidity();
@@ -125,6 +124,7 @@ function checkInput(element, target){
     document.getElementById(target).innerHTML = `<span style="color:red">체크하세요</sapn>`
   } 
 }
+
 // 스터디 수정하기 버튼 클릭
 function makeStudy() {
   const studyName = document.getElementById('studyName').value;
