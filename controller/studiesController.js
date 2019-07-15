@@ -24,12 +24,6 @@ studyControllerObj.getEachStudy = (req, res) => {
 //스터디 만들기 창(get) 현재 로그인 없어도 스터디 만들기 체험 가능하게 해놓은 상태
 studyControllerObj.getMakeStudyPage = (req, res) => {
     res.render("study/makeStudy.ejs"); 
-    
-    // if (req.user) {
-    // } else {
-    //     req.flash("error", "스터디를 만들기 위해 로그인을 먼저 하세요");
-    //     res.redirect("/login");
-    //}
 }
 
 // 스터디 생성 (post)
