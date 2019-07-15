@@ -11,7 +11,7 @@ router.get("/:id", studiesController.getEachStudy);
 router.get("/", studiesController.getMakeStudyPage);
 
 // 스터디 생성
-router.post("/", middleware.isLoggedIn, studiesController.makeStudy);
+router.post("/", studiesController.makeStudy);
 
 // eachStudy에서 오는 ajax (개별 스터디가 가지고 있는 좌표를 반환함)
 router.post("/getlatlng", studiesController.getlatlng);
