@@ -87,7 +87,12 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary btn-block" id="makeStudy" type="submit">스터디 만들기</button>
+        <% if(currentUser){ %>
+          <button class="btn btn-primary btn-block mb-4" id="makeStudy" type="submit">스터디 만들기</button>
+          <% } else { %>
+          <button class="btn btn-primary btn-block mb-4" type="submit"> 포트폴리오 체험을 위해 현 페이지 개방 (로그인시 실제 스터디를 만들 수 있습니다.)</button>
+          
+        <% } %>
       
       
     </div>

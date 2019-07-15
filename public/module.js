@@ -69,7 +69,7 @@ const checkCheckbox = (function () {
     return {
         ischecked: function (checkbox, locId) {
             markerImage = makeMarkerImage();
-            let maxSelect = 2 // 장소 최대 선택 갯수
+            let maxSelect = 1 // 장소 최대 선택 갯수
             
             if (checkbox.checked) {
                 let latlngObj = getLatLng(checkbox);

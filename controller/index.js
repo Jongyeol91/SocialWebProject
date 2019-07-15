@@ -93,19 +93,19 @@ indexControllerObj.forgot = (req, res) => {
 
         sendEmail()
           async function sendEmail (){
-              var buf =  crypto.randomBytes(20)
-              var token = buf.toString('hex')
+              var buf =  crypto.randomBytes(20);
+              var token = buf.toString('hex');
            
             try {
               try {
-                var user = await User.findOne({email: req.body.email})
+                var user = await User.findOne({email: req.body.email});
                 user.resetPasswordToken = token;
                 user.resetPasswordExpires = Date.now() + 3600000 //1시간
-                await user.save()
+                await user.save();
               }catch(err){
                 console.log(err)
-                req.flash("error", "등록된 이메일이 없습니다.")
-                return res.redirect("/forgot")
+                req.flash("error", "등록된 이메일이 없습니다.");
+                return res.redirect("/forgot");
               }
       
               try {
@@ -125,10 +125,10 @@ indexControllerObj.forgot = (req, res) => {
                   subject: "우리동네 스터디 비밀번호 변경",
                   html: 
                   `<div>
-                  <p>회원님께서는 우리동네 스터디의 비밀번호 변경을 요청하셨기에 이 링크를 받았습니다. 
-                  링크를 클릭하시면 비밀번호 변경 창으로 이동합니다.</p>
-                  <p>만약 비밀번호 변경을 요청하신 적이 없으면 이 메일을 무시하시면 됩니다.</p>
-                  <Strong><a href="http://${req.headers.host}/reset/${token}">비밀번호 변경하기 </a></Strong>
+                    <p>회원님께서는 우리동네 스터디의 비밀번호 변경을 요청하셨기에 이 링크를 받았습니다. 
+                    링크를 클릭하시면 비밀번호 변경 창으로 이동합니다.</p>
+                    <p>만약 비밀번호 변경을 요청하신 적이 없으면 이 메일을 무시하시면 됩니다.</p>
+                    <Strong><a href="http://${req.headers.host}/reset/${token}">비밀번호 변경하기 </a></Strong>
                   </div>`
                 })
                 req.flash("success", `이메일을 ${user.email}의 주소로 보냈습니다.`)
