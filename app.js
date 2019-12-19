@@ -1,33 +1,30 @@
 require('dotenv').config();
 
-const express           = require("express"),
-      ejs               = require("ejs"),
-      mongoose          = require("mongoose"),
-      moment            = require("moment"),
-      morgan            = require("morgan"),
-      methodOverride    = require("method-override"),
-      fs                = require("fs"),
-      path              = require("path"),
-      expressSession    = require("express-session")
-      passport          = require("passport"),
-      LocalStrategy     = require("passport-local"),
-      GoogleStrategy    = require("passport-google-oauth20").Strategy,
-      NaverStrategy     = require("passport-naver").Strategy,
-      flash             = require("connect-flash"),
-      helmet            = require("helmet");
+const express           = require("express");
+const ejs               = require("ejs");
+const mongoose          = require("mongoose");
+const morgan            = require("morgan");
+const methodOverride    = require("method-override");
+const fs                = require("fs");
+const path              = require("path");
+const expressSession    = require("express-session");
+const passport          = require("passport");
+const flash             = require("connect-flash");
+const helmet            = require("helmet");
       
 // require routes
-const commentRoutes     = require("./routes/comments"),
-      studyRoutes       = require("./routes/studies"),
-      indexRoutes       = require("./routes/index"),
-      kakaoLocalRoutes  = require("./routes/kakaoLocal"),
-      authRoutes        = require("./routes/auth"),
-      messageRoutes     = require("./routes/message");
+const commentRoutes     = require("./routes/comments");
+const studyRoutes       = require("./routes/studies");
+const indexRoutes       = require("./routes/index");
+const kakaoLocalRoutes  = require("./routes/kakaoLocal");
+const authRoutes        = require("./routes/auth");
+const messageRoutes     = require("./routes/message");
 
 const app = express();
       
 //mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB`, {useNewUrlParser: true});
+// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true});
 
 app.use(morgan("common"));
 app.use(express.static(path.join(__dirname, '/public')));
@@ -70,7 +67,7 @@ app.use(messageRoutes);
 const host = '0.0.0.0';
 
 app.get("/ping", (req, res) => {
-    res.sendStatus(200)
+    res.sendStatus(200);
 })
 
 app.get('/robots.txt', function (req, res) {
@@ -78,9 +75,6 @@ app.get('/robots.txt', function (req, res) {
     res.send("User-agent: *\nDisallow: /");
 });
 
-app.listen(5000, () => {
+app.listen(5000 || 80, () => {
     console.log("server has started");
 });
-
-
-

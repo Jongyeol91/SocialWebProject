@@ -2,17 +2,20 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
+const LocalStrategy = require("passport-local");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const NaverStrategy = require("passport-naver").Strategy;
 
-//User모델에 username과 password있으면 _id를 자동으로 세션등록
+// User모델에 username과 password있으면 _id를 자동으로 세션등록
 passport.use(new LocalStrategy(User.authenticate()));
 
-//asnyc await으로 구현
+// asnyc await으로 구현
 passport.use(new GoogleStrategy({
   clientID: process.env.google_key,
   clientSecret: process.env.google_password,
   callbackURL: process.env.google_callbackURI_aws
 },
-function(accessToken, refreshToken, profile, done) {  
+function(accessToken, refreshToken, profile, done) {
    User.findOne({'oauthId': profile.id })
    .then((user)=>{
     if (!user) {
@@ -24,11 +27,11 @@ function(accessToken, refreshToken, profile, done) {
    .then(() => {
     user.save()
     done(err, user);
-   })
-  } else { 
+   });
+  } else {
     return done(null, user);
   }
-})
+});
 }
 ))
 
@@ -52,7 +55,7 @@ function(accessToken, refreshToken, profile, done) {
         .then(() => {
           user.save();
           done(err, user);
-        })
+        });
       } else { 
           return done(null, user, { message: "네이버로 로그인에 성공하였습니다." });
         }
@@ -125,4 +128,4 @@ passport.authenticate('naver', {
 //     });
 // });
 
-module.exports = router
+module.exports = router;
