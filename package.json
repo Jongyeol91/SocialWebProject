@@ -4,8 +4,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
-    "start": "node app.js"
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -16,12 +17,10 @@
   "bugs": {
     "url": "https://github.com/Jongyeol91/dbJoinPractice/issues"
   },
+  "type": "commonjs",
   "homepage": "https://github.com/Jongyeol91/dbJoinPractice#readme",
   "keywords": [],
   "description": "",
-  "engines": {
-    "node": "10.15.3"
-  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
@@ -44,6 +43,11 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-ejs": "^0.0.2",
+    "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^1.19.1"
   }
 }

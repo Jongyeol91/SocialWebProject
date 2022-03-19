@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
 
 const studySchema = new mongoose.Schema({
-    studyName: String,
-    studyAddress: String,
-    categories: [],
-    recruNum: String,
-    description: String,
-    latlngs: [],
-    img: String,
-    makedDate: { type: Date, default: Date.now },
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
-        username:String
+  studyName: String,
+  studyAddress: String,
+  categories: [],
+
+  recruNum: String,
+  description: String,
+  latlngs: [],
+  img: String,
+  makedDate: { type: Date, default: Date.now },
+  author: {
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
     },
-    joinUsers: [{ type:mongoose.Schema.Types.ObjectId, ref: "User" }], 
-    comments: [{ type:mongoose.Schema.Types.ObjectId, ref: "Comment" }]
+    username: String,
+  },
+  joinUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 // studySchema.pre('remove', async function() {
@@ -27,8 +28,8 @@ const studySchema = new mongoose.Schema({
 //         }
 //     });
 // });
-const Study = new mongoose.model("Study", studySchema)
-module.exports = Study 
+const Study = new mongoose.model('Study', studySchema);
+module.exports = Study;
 
 // Study.find()
 //   .populate([
@@ -37,7 +38,7 @@ module.exports = Study
 //       select: ['username', 'content']
 //     },
 //     {
-    //       path: 'user',
+//       path: 'user',
 //       select: ['nickname', 'thumbnail']
 //     }
 //   ])
