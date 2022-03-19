@@ -86,7 +86,10 @@ app.get('/robots.txt', function (req, res) {
   res.type('text/plain');
   res.send('User-agent: *\nDisallow: /');
 });
-console.log(process.env.NODE_ENV);
-app.listen(5001 || 80, () => {
+let PORT = process.env.PORT;
+if (PORT == null || PORT == '') {
+  PORT = process.env.NODE_ENV === 'development' ? 5001 : 80;
+}
+app.listen(PORT, () => {
   console.log('server has started');
 });
