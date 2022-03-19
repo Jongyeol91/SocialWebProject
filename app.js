@@ -11,7 +11,7 @@ const expressSession    = require("express-session");
 const passport          = require("passport");
 const flash             = require("connect-flash");
 const helmet            = require("helmet");
-      
+
 // require routes
 const commentRoutes     = require("./routes/comments");
 const studyRoutes       = require("./routes/studies");
@@ -21,15 +21,15 @@ const authRoutes        = require("./routes/auth");
 const messageRoutes     = require("./routes/message");
 
 const app = express();
-      
-//mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
-mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB`, {useNewUrlParser: true});
-// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true});
 
+//mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
+ mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB?retryWrites=true&w=majority`);
+// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true});
+// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0.eupih.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`);
 app.use(morgan("common"));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({extended:true}));
-app.use(express.json()) 
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(helmet());
 
@@ -68,13 +68,13 @@ const host = '0.0.0.0';
 
 app.get("/ping", (req, res) => {
     res.sendStatus(200);
-})
+});
 
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
     res.send("User-agent: *\nDisallow: /");
 });
 
-app.listen(5000 || 80, () => {
+app.listen(5001 || 80, () => {
     console.log("server has started");
 });

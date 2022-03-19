@@ -72,12 +72,16 @@ router.post("/forgot", indexController.forgot)
 
 // 비밀번호 재설정 페이지
 router.get("/reset/:token", async(req, res) => {
-  let foundUser = await User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gte: Date.now() } })
-  if (!foundUser) {
-    req.flash("error", "토큰이 유효하지 않거나 비밀번호 변경 기한이 지났습니다.")
-    return res.redirect("/")
+  try {
+    let foundUser = await User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gte: Date.now() } })
+    if (!foundUser) {
+      req.flash("error", "토큰이 유효하지 않거나 비밀번호 변경 기한이 지났습니다.")
+      return res.redirect("/")
+    }
+    res.render("auth/reset.ejs", { token: req.params.token })
+  } catch(error) {
+    console.log(error)
   }
-  res.render("auth/reset.ejs", { token: req.params.token })
 })
 
 // 비밀번호 재설정

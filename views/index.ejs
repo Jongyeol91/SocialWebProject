@@ -4,11 +4,11 @@
 <div class="jumbotron customJumbotron jumbotron-fluid">
   <div class="container">
   <div class=" row flex-column justify-content-center align-items-center" style="height:150px">
-		
+
 			<a class="btn btn-danger justify-self-center mt-4" href="/study">스터디 만들기</a>
-	
+
 		<div class="lead text-center mt-2">가까운 곳에서 필요한 스터디를 개설하세요.</div>
-  </div>	
+  </div>
   </div>
 </div>
 
@@ -36,18 +36,18 @@
 						<% } %>
 						<td class="text-muted " style="font-size:small"> <%=study.recruNum%>명 </td>
 						<td>
-							<div class="" style="font-size:13px	"> 
+							<div class="" style="font-size:13px	">
 								<% study.categories.forEach((category) => { %>
 									<% if (category === "사기업") { %>
 										<a href="#" class="badge badge-danger">사</a>
 									<% } else if (category === "공기업") { %>
 										<a href="#" class="badge badge-primary">공</a>
 									<% } else if (category === "인적성") { %>
-										<a href="#" class="badge badge-info">필기</a> 
+										<a href="#" class="badge badge-info">필기</a>
 									<% } else if (category === "면접") { %>
 										<a href="#" class="badge badge-info">면접</a>
 									<% } else if (category === "자소서") { %>
-										<a href="#" class="badge badge-info">서류</a> 
+										<a href="#" class="badge badge-info">서류</a>
 									<% } %>
 								<% }) %>
 							</div>
@@ -56,7 +56,7 @@
 					</tr>
 				<% }) %>
 			</tbody>
-		</table>		
+		</table>
 
 <!--pagination-->
 	<div class="row justify-content-center">
@@ -68,34 +68,34 @@
 					<% } else { %>
 						<li><a class="page-link" href="/study">처음</a></li> <!-- 1이 아니면 "first" 활성화, 초기페이지  -->
 					<% } %>
-	
+
 					<% if (current == 1) { %>
 						<li class="page-item disabled"><a class="page-link">«</a></li> <!--1이면 "<<" 비활성화 -->
 					<% } else { %>
 						<li><a class="page-link" href="/?page=<%= Number(current) - 1 %>">«</a></li> <!-- 1아니면 "<<" 활성화, 이전 페이지(current - 1) -->
 					<% } %>
-	
+
 					<% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <!-- current가 5보다 크면 i = current-4, 아니면 i = 1 -->
 					<% if (i !== 1) { %>
 						<li class="page-item disabled"><a class="page-link">...</a></li> <!-- i가 1이 아니면 "앞"..." 비활성화 -->
 					<% } %>
 					<% for (; i <= (Number(current) + 4) && i <= pages; i++) { %><!-- 반복문 : i가 current + 4 보다 크고 pages(반올림된 페이지) 이하 까지 -->
-						<% if (i == current) { %>																			
+						<% if (i == current) { %>
 							<li class="active"><a class="page-link"><%= i %></a></li>		<!-- i가 current를 지날때, href 비생성, 클릭시점의 새로운 시작, 즉 새로운 현재 페이지 -->
-						<% } else { %>																																
+						<% } else { %>
 							<li><a class="page-link" href="/?page=<%= i %>"><%= i %></a></li><!-- i가 current아닐때는 반복문의 i만큼 링크 생성 -->
 						<% } %>																																			<!-- ex) 8을 누르면 8 9 10 11 12 생성 -->
 						<% if (i == Number(current) + 4 && i < pages) { %> 														<!-- 반복분 끝 도착 -->
 							<li class="page-item disabled"><a class="page-link">...</a></li> 						<!-- "뒤..." 비활성화 -->
 						<% } %>
 					<% } %> 																											<!-- 반복문 끝 -->
-	
-					<% if (current == pages) { %>					
+
+					<% if (current == pages) { %>
 						<li class="page-item disabled"><a class="page-link">»</a></li> <!-- 만약 current가 끝 페이지라면 ">>" 비활성화 -->
 					<% } else { %>
 						<li><a class="page-link" href="/?page=<%= Number(current) + 1 %>">»</a></li> <!-- 뒷 페이지가 더 있다면 ">>" 활성화(href= current+1) -->
 					<% } %>
-	
+
 					<% if (current == pages) { %>
 						<li class="page-item disabled"><a class="page-link">끝</a></li> <!-- 만약 current가 끝 페이지라면 "last" 비활성화 -->
 					<% } else { %>
@@ -108,51 +108,52 @@
 
 
 
-</div><!-- container -->		
+</div><!-- container -->
 
 	<!--지도-->
 	<div class="col-lg-6">
 		<div id="indexMap" style="width:100%; height:600px;"></div>
 	</div>
-		
-</div> 
-	
+
 </div>
-	
+
+</div>
+
 
 <script>
-let mapContainer = document.getElementById('indexMap'); 
-mapOption = { 
-	center: new daum.maps.LatLng(37.6512265449085, 127.076692983486), 
-    level: 9 
+let mapContainer = document.getElementById('indexMap');
+mapOption = {
+	center: new daum.maps.LatLng(37.6512265449085, 127.076692983486),
+    level: 9
 };
-let indexMap = new daum.maps.Map(mapContainer, mapOption); 
+let indexMap = new daum.maps.Map(mapContainer, mapOption);
+console.log(indexMap)
 
-let imageSrc = '/customMarker.png',     
-    imageSize = new daum.maps.Size(32, 34), 
-    imageOption = {offset: new daum.maps.Point(20, 42)}; 
-      
+let imageSrc = '/customMarker.png',
+    imageSize = new daum.maps.Size(32, 34),
+    imageOption = {offset: new daum.maps.Point(20, 42)};
+
 let markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
 
 function setMarker(study) {
-  let markerPosition  = new daum.maps.LatLng(study.latlngs[0].lat, study.latlngs[0].lng); 
+  let markerPosition  = new daum.maps.LatLng(study.latlngs[0].lat, study.latlngs[0].lng);
   let marker = new daum.maps.Marker({
 		position: markerPosition,
-		image: markerImage 
+		image: markerImage
   });
 		marker.setMap(indexMap);
 		 // 인포윈도우 생성
-		
-		let iwContent = 
+
+		let iwContent =
 		`<div class="overlaybox">
-			<div class="text-center text-muted " 
+			<div class="text-center text-muted "
 											style="font-size:small padding:5px; font-family: 'Noto Sans KR', sans-serif;">
 											${study.studyName} <br> 모집인원: ${study.recruNum}
 										</div>
 										</div>`
 
-		var content = 
+		var content =
 		`<div class="d-flex flex-column justify-content-center">
 			<span class="badge badge-light mb-0">${study.studyName}</span>
 			<span class="badge badge-info"> ${study.categories}</span>
@@ -165,12 +166,12 @@ function setMarker(study) {
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
   </div>
 </div>`
-					
+
 
 		let overlay = new daum.maps.CustomOverlay({
 			content: content,
     	//map: map,
-    	position: marker.getPosition()       
+    	position: marker.getPosition()
 	});
 
 		daum.maps.event.addListener(marker, 'mouseover', function() {
@@ -207,7 +208,7 @@ window.onload= function(){
 }
 
 
-		
+
 </script>
 
 <%-include("./partials/footer")-%>
