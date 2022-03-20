@@ -42,7 +42,7 @@ passport.use(
     {
       clientID: process.env.naver_key,
       clientSecret: process.env.naver_password,
-      callbackURL: process.env.naver_callbackURI_aws,
+      callbackURL: process.env.naver_callbackURI,
     },
     function (accessToken, refreshToken, profile, done) {
       //console.log(profile)

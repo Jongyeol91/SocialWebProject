@@ -19,13 +19,10 @@ const authRoutes = require('./routes/auth');
 const messageRoutes = require('./routes/message');
 
 const app = express();
-
-//mongoose.connect('mongodb://localhost:27017/studyprojectDB', {useNewUrlParser: true});
 mongoose.connect(
   `mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/studyprojectDB?retryWrites=true&w=majority`
 );
-// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0-eupih.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true});
-// mongoose.connect(`mongodb+srv://admin-jongyeol:${process.env.mongodb_password}@cluster0.eupih.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`);
+
 app.use(morgan('common'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +33,7 @@ app.use(helmet());
 // 세션 설정
 app.use(
   expressSession({
-    secret: 'mySecret',
+    secret: process.env.session_secret,
     saveUninitialized: false, // false: 세션이 라이프타임동안 수정된 것이 없으면(초기화되지 않았으면) 저장하지 않는다.
     resave: false,
     name: 'studyproject',
