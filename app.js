@@ -1,16 +1,6 @@
 const dotenv = require('dotenv');
 const path = require('path');
-(() => {
-  const ENV = process.env.NODE_ENV;
-  console.log(ENV);
-  if (!ENV || (ENV !== 'development' && ENV !== 'production')) {
-    throw new Error('NODE_ENV not found');
-  }
-  const result = dotenv.config({ path: path.join(__dirname, '.env.' + ENV) });
-  if (result.parsed === undefined) {
-    throw new Error('env parsed error');
-  }
-})();
+dotenv.config();
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
